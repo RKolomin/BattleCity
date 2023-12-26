@@ -1,0 +1,16 @@
+E:\LM_SOURCES\Tank_BattleCity\obj\NET35\BattleCity.csproj.AssemblyReference.cache
+E:\LM_SOURCES\Tank_BattleCity\obj\NET35\BattleCity.GameForm.resources
+E:\LM_SOURCES\Tank_BattleCity\obj\NET35\BattleCity.Properties.Resources.resources
+E:\LM_SOURCES\Tank_BattleCity\obj\NET35\BattleCity.csproj.GenerateResource.cache
+E:\LM_SOURCES\Tank_BattleCity\obj\NET35\BattleCity.csproj.CoreCompileInputs.cache
+E:\LM_SOURCES\Tank_BattleCity\bin\NET35\RunWithConsole.cmd
+E:\LM_SOURCES\Tank_BattleCity\bin\NET35\BattleCity.exe
+E:\LM_SOURCES\Tank_BattleCity\bin\NET35\BattleCity.pdb
+E:\LM_SOURCES\Tank_BattleCity\bin\NET35\Newtonsoft.Json.dll
+E:\LM_SOURCES\Tank_BattleCity\bin\NET35\SlimDX.dll
+E:\LM_SOURCES\Tank_BattleCity\bin\NET35\System.Threading.dll
+E:\LM_SOURCES\Tank_BattleCity\bin\NET35\Newtonsoft.Json.xml
+E:\LM_SOURCES\Tank_BattleCity\bin\NET35\System.Threading.xml
+E:\LM_SOURCES\Tank_BattleCity\obj\NET35\BattleCity.csproj.CopyComplete
+E:\LM_SOURCES\Tank_BattleCity\obj\NET35\BattleCity.exe
+E:\LM_SOURCES\Tank_BattleCity\obj\NET35\BattleCity.pdb

@@ -1,0 +1,458 @@
+﻿[
+  null,
+  {
+    "Id": 1,
+    "File": "PLAYER_STATUS.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 2,
+    "File": "BRICK.PNG",
+    "ColorKey": -12550144
+  },
+  {
+    "Id": 3,
+    "File": "ENEMY_STATUS.PNG",
+    "ColorKey": 16777215
+  },
+  {
+    "Id": 4,
+    "File": "GRASS.PNG",
+    "ColorKey": -12550144
+  },
+  {
+    "Id": 5,
+    "File": "ICE.PNG",
+    "ColorKey": -12550144
+  },
+  {
+    "Id": 6,
+    "File": "IRON.PNG",
+    "ColorKey": -12550144
+  },
+  {
+    "Id": 7,
+    "File": "SHIP.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 8,
+    "File": "FONT_OVERLAY.PNG",
+    "ColorKey": -12550144
+  },
+  {
+    "Id": 9,
+    "File": "DESTROYED_BASE.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 10,
+    "File": "BASE.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 11,
+    "File": "STAGE_FLAG.PNG",
+    "ColorKey": 16777215
+  },
+  {
+    "Id": 12,
+    "File": "BULLET.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 13,
+    "File": "WATER1.PNG",
+    "ColorKey": -12550144
+  },
+  {
+    "Id": 14,
+    "File": "WATER2.PNG",
+    "ColorKey": -12550144
+  },
+  {
+    "Id": 15,
+    "File": "WATER3.PNG",
+    "ColorKey": -12550144
+  },
+  {
+    "Id": 16,
+    "File": "LIGHT_TANK1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 17,
+    "File": "LIGHT_TANK2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 18,
+    "File": "MIDDLE_TANK1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 19,
+    "File": "MIDDLE_TANK2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 20,
+    "File": "BTR1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 21,
+    "File": "BTR2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 22,
+    "File": "HEAVY_TANK1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 23,
+    "File": "HEAVY_TANK2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 24,
+    "File": "PLAYER_TANK1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 25,
+    "File": "PLAYER_TANK2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 26,
+    "File": "BLAST1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 27,
+    "File": "BLAST2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 28,
+    "File": "BLAST3.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 29,
+    "File": "BOOM1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 30,
+    "File": "BOOM2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 31,
+    "File": "SHIELD1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 32,
+    "File": "SHIELD2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 33,
+    "File": "LIFEUP.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 34,
+    "File": "DEFENSE.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 35,
+    "File": "KILL_ENEMY.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 36,
+    "File": "INVULNERABILITY.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 37,
+    "File": "UPGRADE_WEAPON.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 38,
+    "File": "SUPER_WEAPON.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 39,
+    "File": "FREEZE_ENEMY.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 40,
+    "File": "SHIP_SHAPE1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 41,
+    "File": "PLAYER_TANK1_LV1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 42,
+    "File": "PLAYER_TANK2_LV1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 43,
+    "File": "PLAYER_TANK1_LV2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 44,
+    "File": "PLAYER_TANK2_LV2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 45,
+    "File": "PLAYER_TANK1_LV3.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 46,
+    "File": "PLAYER_TANK2_LV3.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 47,
+    "File": "SPAWN_1.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 48,
+    "File": "SPAWN_2.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 49,
+    "File": "SPAWN_3.PNG",
+    "ColorKey": -16777216
+  },
+  {
+    "Id": 50,
+    "File": "SPAWN_4.PNG",
+    "ColorKey": -16777216
+  },
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null
+]

@@ -1,0 +1,10 @@
+E:\LM_SOURCES\LmGraphicsPipeline\bin\Debug\LmGraphicsPipeline.exe
+E:\LM_SOURCES\LmGraphicsPipeline\bin\Debug\LmGraphicsPipeline.pdb
+E:\LM_SOURCES\LmGraphicsPipeline\bin\Debug\SlimDX.dll
+E:\LM_SOURCES\LmGraphicsPipeline\obj\Debug\LmGraphicsPipeline.csprojResolveAssemblyReference.cache
+E:\LM_SOURCES\LmGraphicsPipeline\obj\Debug\LmGraphicsPipeline.Form1.resources
+E:\LM_SOURCES\LmGraphicsPipeline\obj\Debug\LmGraphicsPipeline.Properties.Resources.resources
+E:\LM_SOURCES\LmGraphicsPipeline\obj\Debug\LmGraphicsPipeline.csproj.GenerateResource.Cache
+E:\LM_SOURCES\LmGraphicsPipeline\obj\Debug\LmGraphicsPipeline.csproj.CoreCompileInputs.cache
+E:\LM_SOURCES\LmGraphicsPipeline\obj\Debug\LmGraphicsPipeline.exe
+E:\LM_SOURCES\LmGraphicsPipeline\obj\Debug\LmGraphicsPipeline.pdb

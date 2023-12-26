@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9BB9B3D5-A7C7-4933-82A5-24EB09F3E0C5}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>BattleCity</RootNamespace>
+    <AssemblyName>BattleCity</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>BattleCity.EntryPoints.StartGameProgram</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NET35|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\NET35\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET35</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NET451|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\NET451\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET451</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\SlimDX SDK (January 2012)\Bin\net40\x86\SlimDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\AudioChunk.cs" />
+    <Compile Include="Audio\AudioSamplesMulticast.cs" />
+    <Compile Include="Audio\Decoders\RiffChunkParser.cs" />
+    <Compile Include="Audio\Decoders\FourCC.cs" />
+    <Compile Include="Audio\Decoders\RiffChunk.cs" />
+    <Compile Include="Audio\IAudioPlayback.cs" />
+    <Compile Include="Audio\IAudioReader.cs" />
+    <Compile Include="Audio\IAudioSource.cs" />
+    <Compile Include="Audio\IPcmOutputStream.cs" />
+    <Compile Include="Audio\ISoundEngine.cs" />
+    <Compile Include="Audio\ISoundMixer.cs" />
+    <Compile Include="Audio\PcmAudioReader.cs" />
+    <Compile Include="Audio\Resampler.cs" />
+    <Compile Include="Audio\SoundEngine.cs" />
+    <Compile Include="Audio\SoundMixer.cs" />
+    <Compile Include="Audio\Decoders\WaveFileReader.cs" />
+    <Compile Include="Audio\XAPlayback.cs" />
+    <Compile Include="Colors.cs" />
+    <Compile Include="Common\AABB.cs" />
+    <Compile Include="Common\AppSettings.cs" />
+    <Compile Include="Common\ConstructionObject.cs" />
+    <Compile Include="Common\GameAchievements.cs" />
+    <Compile Include="Common\SpawnQueueBattleUnit.cs" />
+    <Compile Include="Enums\DrawStringFormat.cs" />
+    <Compile Include="Enums\SettingSectionEnum.cs" />
+    <Compile Include="Extensions\ColliderExtensions.cs" />
+    <Compile Include="Extensions\GameConfigExtensions.cs" />
+    <Compile Include="GameObjects\BaseGameObject.cs" />
+    <Compile Include="Common\CommonConfig.cs" />
+    <Compile Include="Common\ContactObject.cs" />
+    <Compile Include="Common\DestroyedEnemyInfo.cs" />
+    <Compile Include="Common\IGameApplication.cs" />
+    <Compile Include="Common\StageResult.cs" />
+    <Compile Include="EntryPoints\StartGameProgram.cs" />
+    <Compile Include="Enums\InputDeviceType.cs" />
+    <Compile Include="Enums\SoundType.cs" />
+    <Compile Include="Enums\StageStateEnum.cs" />
+    <Compile Include="Extensions\CloneObjectExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Extensions\WaveFormatExtensions.cs" />
+    <Compile Include="GameObjects\EnemyUnit.cs" />
+    <Compile Include="Handlers\PowerUp\DefensePowerUp.cs" />
+    <Compile Include="Handlers\PowerUp\IPowerUpHandler.cs" />
+    <Compile Include="Handlers\PowerUp\FreezeEnemyPowerUp.cs" />
+    <Compile Include="Handlers\PowerUp\KillEnemyPowerUp.cs" />
+    <Compile Include="Handlers\PowerUp\LifeUpPowerUp.cs" />
+    <Compile Include="Handlers\PowerUp\ShieldPowerUp.cs" />
+    <Compile Include="Handlers\PowerUp\ShipPowerUp.cs" />
+    <Compile Include="Handlers\PowerUp\SuperWeaponPowerUp.cs" />
+    <Compile Include="Handlers\PowerUp\WeaponUpgradePowerUp.cs" />
+    <Compile Include="Helpers\ConstructionHelper.cs" />
+    <Compile Include="Helpers\Windows\WinConsole.cs" />
+    <Compile Include="InputControllers\ControllerButton.cs" />
+    <Compile Include="InputControllers\ButtonsMap.cs" />
+    <Compile Include="InputControllers\IKeyboardController.cs" />
+    <Compile Include="InputControllers\XInputController.cs" />
+    <Compile Include="InputControllers\IControllerHub.cs" />
+    <Compile Include="InputControllers\IButtonsMap.cs" />
+    <Compile Include="InputControllers\IInputController.cs" />
+    <Compile Include="InputControllers\ControllerHub.cs" />
+    <Compile Include="InputControllers\KeyboardController.cs" />
+    <Compile Include="InputControllers\ButtonNames.cs" />
+    <Compile Include="InputControllers\KeyboardKey.cs" />
+    <Compile Include="InputControllers\XInputKeys.cs" />
+    <Compile Include="Helpers\MathF.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Common\BattleStage.cs" />
+    <Compile Include="Common\GameConfig.cs" />
+    <Compile Include="Common\GameContentGenerator.cs" />
+    <Compile Include="Repositories\GameObjectRepository.cs" />
+    <Compile Include="Common\IResxId.cs" />
+    <Compile Include="Repositories\SoundRepository.cs" />
+    <Compile Include="Common\SoundResource.cs" />
+    <Compile Include="Repositories\StageRepository.cs" />
+    <Compile Include="Repositories\TextureRepository.cs" />
+    <Compile Include="Common\TextureResource.cs" />
+    <Compile Include="Video\D3D9DeviceContext.cs" />
+    <Compile Include="Enums\GameScreenShowState.cs" />
+    <Compile Include="Enums\MoveDirection.cs" />
+    <Compile Include="Enums\UnitAction.cs" />
+    <Compile Include="Enums\FieldBoundsCollision.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\JsonExtensions.cs" />
+    <Compile Include="Extensions\StopwatchExtensions.cs" />
+    <Compile Include="GameObjects\AnimationObject.cs" />
+    <Compile Include="GameObjects\Gun.cs" />
+    <Compile Include="Extensions\GameFieldObjectExtensions.cs" />
+    <Compile Include="GameObjects\UserBattleUnit.cs" />
+    <Compile Include="Enums\GameScreenEnum.cs" />
+    <Compile Include="Enums\GameObjectType.cs" />
+    <Compile Include="Helpers\ColorConverter.cs" />
+    <Compile Include="Common\Player.cs" />
+    <Compile Include="Logging\ConsoleLogger.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <None Include="app.config" />
+    <None Include="Data\Fonts\prstart.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="RunWithConsole.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Compile Include="Video\D3DState.cs" />
+    <Compile Include="Video\GameFont.cs" />
+    <Compile Include="Video\IDeviceContext.cs" />
+    <Compile Include="Video\IGameFont.cs" />
+    <Compile Include="Video\IGameGraphics.cs" />
+    <Compile Include="Video\IPostProcessEffect.cs" />
+    <Compile Include="Video\ScanlinesPostProcessEffect.cs" />
+    <Compile Include="Video\Shaders.cs" />
+    <Compile Include="Video\VertexStructs.cs" />
+    <Compile Include="Common\BlockPlaceholder.cs" />
+    <Compile Include="Video\GameGraphics.cs" />
+    <Compile Include="VisualComponents\EnemyDrawBlock.cs" />
+    <Compile Include="VisualComponents\ExtrasMenuOption.cs" />
+    <Compile Include="VisualComponents\ExtrasScreen.cs" />
+    <Compile Include="VisualComponents\GameOverOverlay.cs" />
+    <Compile Include="VisualComponents\GameOverScreen.cs" />
+    <Compile Include="VisualComponents\GamePauseOverlay.cs" />
+    <Compile Include="VisualComponents\HiScoreScreen.cs" />
+    <Compile Include="VisualComponents\StageCompleteOverlay.cs" />
+    <Compile Include="VisualComponents\MainMenuOption.cs" />
+    <Compile Include="VisualComponents\SettingMenuOption.cs" />
+    <Compile Include="VisualComponents\SettingsScreen.cs" />
+    <Compile Include="VisualComponents\StageResultScreen.cs" />
+    <Compile Include="VisualComponents\MenuOption.cs" />
+    <Compile Include="VisualComponents\ScreenTransition.cs" />
+    <Compile Include="VisualComponents\StageSelectorScreenTransition.cs" />
+    <Compile Include="VisualComponents\BorderedTextBlock.cs" />
+    <Compile Include="VisualComponents\TextBlock.cs" />
+    <Compile Include="GameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameForm.Designer.cs">
+      <DependentUpon>GameForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Games\BattleCity\BattleGround.cs" />
+    <Compile Include="GameObjects\Bullet.cs" />
+    <Compile Include="GameObjects\BattleUnit.cs" />
+    <Compile Include="GameObjects\GameFieldObject.cs" />
+    <Compile Include="GameObjects\RespawnPoint.cs" />
+    <Compile Include="Common\GameContent.cs" />
+    <Compile Include="Games\BattleCity\LevelEditor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisualComponents\MainScreen.cs" />
+    <EmbeddedResource Include="GameForm.resx">
+      <DependentUpon>GameForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="RunWithDefaultContent.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Patch\SystemDrawing4to2Patcher.exe" />
+    <None Include="Data\Sounds\base_explode.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\bonus_appear.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\bonus_destroy.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\bonus_points.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\count.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\enemy_explode.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\game_over.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\high_score.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\hit_armor.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\hit_brick.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\hit_wall.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\level_start.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\move.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\pause.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\player_explode.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\player_shot.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\base.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\blast1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\blast2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\blast3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\boom1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\boom2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\brick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\btr1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\btr2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\bullet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\defense.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\destroyed_base.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\enemy_status.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\freeze_enemy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\heavy_tank1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\heavy_tank2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\ice.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\invulnerability.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\iron.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\kill_enemy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\lifeup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\light_tank1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\light_tank2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\middle_tank1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\middle_tank2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_status.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_tank1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_tank1_lv1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_tank1_lv2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_tank1_lv3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_tank2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_tank2_lv1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_tank2_lv2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\player_tank2_lv3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\shield1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\shield2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\ship.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\ship_shape1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\spawn_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\spawn_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\spawn_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\spawn_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\stage_flag.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\super_weapon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\upgrade_weapon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\water1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\water2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\water3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Textures\font_overlay.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\enemy_move.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\ice.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\Sounds\extra_life.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Icon.ico" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(DefineConstants.Contains(`NET35`))'">
+    <PostBuildEvent>start $(ProjectDir)Patch\SystemDrawing4to2Patcher.exe ""$(TargetDir)$(ProjectName).exe""</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>del "$(TargetDir)*.xml"
+del "$(TargetDir)*.pdb"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,2 +1,1 @@
-# BattleCity
-BattleCity by Rinat Kolomin
+﻿# BattleCity by Rinat Kolomin
