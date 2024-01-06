@@ -26,7 +26,7 @@ namespace BattleCity.Common
         /// <summary>
         /// Наименование файла конфигураций по умолчанию
         /// </summary>
-        private const string GameConfigFileName = "game_config.json";
+        public const string GameConfigFileName = "game_config.json";
 
         /// <summary>
         /// Наименование файла уровней (stages)
@@ -210,8 +210,22 @@ namespace BattleCity.Common
                 {
                     using (var repo = new GameObjectRepository(logger, gameObjectsDirectory, GameObjectsFileName, RepositoryCapacity))
                     {
+                        Textures.Load(null);
+                        Sounds.Load();
+
                         GameContentGenerator.CreateDefaultGameObjects(this, repo);
                         repo.Save();
+
+                        Textures.Dispose();
+                        Sounds.Dispose();
+
+                        Sounds = new SoundRepository(logger, soundsDirectory, SoundsFileName, RepositoryCapacity);
+                        if (!IsDefaultDirectory(soundsDirectory))
+                            Sounds.AlterContentDirectory = DefaultContentDirectory;
+
+                        Textures = new TextureRepository(logger, texturesDirectory, TexturesFileName, RepositoryCapacity);
+                        if (!IsDefaultDirectory(texturesDirectory))
+                            Textures.AlterContentDirectory = DefaultContentDirectory;
                     }
                 }
             }

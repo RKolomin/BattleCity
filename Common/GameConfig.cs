@@ -13,7 +13,6 @@ namespace BattleCity.Common
     /// </summary>
     public class GameConfig
     {
-        string fileName;
         string bgrHexColor;
         string battleGndHexColor;
         string transitionScreenBgrHexColor;
@@ -269,6 +268,11 @@ namespace BattleCity.Common
         public int MaxActiveEnemy { get; set; }
 
         /// <summary>
+        /// Принудительно случайные вражеские юниты (Игнорирует заданные в stage)
+        /// </summary>
+        public bool ForceRandomEnemies { get; set; }
+
+        /// <summary>
         /// Количество позиций появления вражеских юнитов
         /// </summary>
         public int EnemySpawnPositionCount { get; set; }
@@ -450,9 +454,11 @@ namespace BattleCity.Common
         /// Конструктор
         /// </summary>
         /// <param name="directoryPath">Путь к директории с конфигурациями</param>
-        public GameConfig(string directoryPath)
+        /// <param name="fileName">Имя файла</param>
+        public GameConfig(string directoryPath, string fileName)
         {
             DirectoryPath = directoryPath;
+            FileName = fileName;
         }
 
         /// <summary>
@@ -469,7 +475,7 @@ namespace BattleCity.Common
                 var data = File.ReadAllText(filePath, Encoding.UTF8);
                 var config = JsonConvert.DeserializeObject<GameConfig>(data);
                 config.DirectoryPath = directoryPath;
-                config.fileName = fileName;
+                config.FileName = fileName;
                 return config;
             }
             catch (Exception ex)
@@ -485,7 +491,7 @@ namespace BattleCity.Common
         public void Save()
         {
             var data = this.ToJson();
-            string filePath = DirectoryPath + "\\" + fileName;
+            string filePath = Path.Combine(DirectoryPath, FileName);
             File.Delete(filePath);
             using (StreamWriter stream = new StreamWriter(filePath, false, Encoding.UTF8))
             {

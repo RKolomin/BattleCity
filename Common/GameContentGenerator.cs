@@ -36,10 +36,11 @@ namespace BattleCity.Common
 
         public static GameConfig CreateTank1990GameConfig(string contentDirectoryName = "Data")
         {
-            return new GameConfig(contentDirectoryName)
+            return new GameConfig(contentDirectoryName, GameContent.GameConfigFileName)
             {
                 Name = "TANK X 1990",
                 RandomSeed = 101010,
+                ForceRandomEnemies = true,
                 EnemyFlashHexColor = "#FFFF545D",
                 TowerTempDefenseDuration = 20,
                 UnitMaxUpgradeLevel = 6,
@@ -105,7 +106,7 @@ namespace BattleCity.Common
         /// <returns></returns>
         public static GameConfig CreateDefaultGameConfig(string contentDirectoryName = "Data")
         {
-            return new GameConfig(contentDirectoryName)
+            return new GameConfig(contentDirectoryName, GameContent.GameConfigFileName)
             {
                 Name = "BATTLE CITY",
                 RandomSeed = 112233,
@@ -669,7 +670,7 @@ namespace BattleCity.Common
                 FlashHexColors = new string[] { "#FFFFFFFF", "#FFFFA357", "FFFFBE30", "#FF47C44D" },
                 DestroySndId = GetSoundId(resx, "enemy_explode"),
                 DrawOrder = 1,
-                Health = 1,
+                Health = 4,
                 Width = 4,
                 Height = 4,
                 MoveSpeed = 1m,
@@ -683,28 +684,31 @@ namespace BattleCity.Common
                 }
             });
 
-            //Items.Add(new GameFieldObject()
-            //{
-            //    Type = GameObjectType.Destroyable | GameObjectType.Enemy | GameObjectType.Unit,
-            //    Armor = 0,
-            //    TextureIdList = GetTextureList(resx, "player_tank1_lv3", "player_tank2_lv3"),
-            //    Name = "SUPER_HEAVY_TANK",
-            //    FlashHexColors = new string[] { "#FF61adba", "#FFFFA357", "FFFFBE30", "#FF47C44D" },
-            //    DestroySndId = GetSoundId(resx, "enemy_explode"),
-            //    DrawOrder = 1,
-            //    Health = 1,
-            //    Width = 4,
-            //    Height = 4,
-            //    MoveSpeed = 1.65m,
-            //    TextureAnimationTime = 3,
-            //    BonusPoints = 400,
-            //    Gun = new Gun()
-            //    {
-            //        BulletSpeed = 4,
-            //        BulletPower = 1,
-            //        GunReloadDelay = 10
-            //    }
-            //});
+            Items.Add(new GameFieldObject()
+            {
+                Type = GameObjectType.Destroyable | GameObjectType.Enemy | GameObjectType.Unit | GameObjectType.Barrier,
+                Armor = 0,
+                TextureIdList = GetTextureList(resx, "player_tank1_lv3", "player_tank2_lv3"),
+                Name = "SUPER_HEAVY_TANK",
+                FlashHexColors = new string[] { "#FF61adba", "#FFFFA357", "FFFFBE30", "#FF47C44D" },
+                DestroySndId = GetSoundId(resx, "enemy_explode"),
+                DrawOrder = 1,
+                Health = 1,
+                Width = 4,
+                Height = 4,
+                MoveSpeed = 1.65m,
+                TextureAnimationTime = 3,
+                BonusPoints = 400,
+                UpgradeLevel = 3,
+                Gun = new Gun()
+                {
+                    BulletSpeed = 6,
+                    Capacity = 2,
+                    InitialCapacity = 2,
+                    GunReloadDelay = 10,
+                    BulletPower = 3,
+                }
+            });
 
             #endregion
 
@@ -720,7 +724,7 @@ namespace BattleCity.Common
                 Width = 4,
                 Height = 4,
                 DrawOrder = 3,
-                DestroySndId = GetSoundId(resx, "extra_life"),
+                DestroySndId = GetSoundId(resx, "bonus_destroy"),
                 AppearSndId = GetSoundId(resx, "bonus_appear"),
                 BonusPoints = 500,
             });

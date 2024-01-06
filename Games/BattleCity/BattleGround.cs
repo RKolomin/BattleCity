@@ -293,6 +293,7 @@ namespace BattleCity
             var forceMove = unit.ForceMoveInertion;
             var type = unit.Type;
             var hexColor = unit.HexColor;
+            var health = unit.Health;
 
             // задаем апгрейд
             unit.CopyFrom(unitUpgadePreset);
@@ -310,6 +311,10 @@ namespace BattleCity
             unit.HexColor = hexColor;
             unit.ForceMoveInertion = forceMove;
             unit.MoveInertion = moveInertion;
+            if (targetType == GameObjectType.Enemy)
+            {
+                unit.Health = health;
+            }
         }
 
         /// <summary>
@@ -382,7 +387,11 @@ namespace BattleCity
                 return;
 
             unit.Type |= GameObjectType.Ship;
+            CreateShip(unit);
+        }
 
+        private void CreateShip(BattleUnit unit)
+        {
             var shipAnimation = new AnimationObject()
             {
                 AutoRepeat = true,
@@ -533,7 +542,7 @@ namespace BattleCity
         {
             // получаем все возможные типы вражеских юнитов
             var allEnemyPresets = content.GameObjects
-                            .GetAll(p => p.Type.HasFlag(GameObjectType.Enemy))
+                            .GetAll(p => p.Type.HasFlag(GameObjectType.Enemy) && p.UpgradeLevel == 0)
                             .ToList();
 
             // дополняем очередь вражеских юнитов, которые будут появляться на поле
@@ -545,7 +554,7 @@ namespace BattleCity
                 var enemy = new SpawnQueueBattleUnit()
                 {
                     Name = allEnemyPresets[enemyNameIndex].Name,
-                    Health = 1,
+                    Health = Math.Max(1, unit.Health),
                     ExtraBonus = 0
                 };
 
@@ -876,7 +885,7 @@ namespace BattleCity
                 enemiesCount = stage.Enemies.Count;
             }
 
-            if (stage != null && stage.Enemies != null && stage.Enemies.Count > 0)
+            if (stage != null && stage.Enemies != null && stage.Enemies.Count > 0 && !Config.ForceRandomEnemies)
             {
                 // подготавливаем очередь вражеских юнитов,
                 // определенных в уровне (stage)
@@ -931,11 +940,23 @@ namespace BattleCity
                 }
             }
 
+            // Проверяем наличие достаточного количества вражеских юнитов
             if (stage == null || stage.Enemies == null || stage.Enemies.Count == 0 || enemyQueue.Count == 0)
+            {
                 EnsureEnemyQueue();
+            }
 
             // подготовим позиции появления юнитов
             InitSpawnPositions();
+
+            foreach (var player in players)
+            {
+                if (player != null && player.IsAlive && player.Unit != null &&
+                    player.Unit.Type.HasFlag(GameObjectType.Ship))
+                {
+                    CreateShip(player.Unit);
+                }
+            }
 
             return true;
         }
@@ -1247,7 +1268,14 @@ namespace BattleCity
                 else
                 {
                     // понижаем уровень прокачки без уничтожения юнита
-                    DowngradePlayerUnit(unit);
+                    if (unit.IsUser)
+                    {
+                        DowngradePlayerUnit(unit);
+                    }
+                    else
+                    {
+                        gameObject.Health -= 1;
+                    }
                     bullet.Power = 0;
                     soundEngine.PlaySound("hit_armor");
                 }
@@ -2756,6 +2784,9 @@ namespace BattleCity
                 x.GetType().Name.ToUpper()
                 .StartsWith(powerUpObj.Name.Replace("_", ""))
                 );
+
+            int? currentUnitLifes = GetPlayerByUnit(unit)?.Lifes;
+
             // вызываем метод обработки подбора бонуса
             handler?.Handle(unit, powerUpObj);
 
@@ -2763,17 +2794,26 @@ namespace BattleCity
 
             if (unit.IsUser)
             {
+                var player = GetPlayerByUnit(unit);
+
+                // Если у игрока изменилось количество жизней
+                // то сработал бонус и звук уже теоретитчески воспроизводится
+                if (player.Lifes != currentUnitLifes)
+                {
+                    // звук подбора бонуса не воспроизводим
+                    playSound = false;
+                }
+
                 if (powerUpObj.BonusPoints != 0)
                 {
-                    var player = GetPlayerByUnit(unit);
                     int currentLifes = player.Lifes;
                     AddPoints(player, powerUpObj.BonusPoints);
 
                     if (currentLifes != player.Lifes)
                     {
                         // т.к. при начисление очков игроку может быть добавлена жизнь,
-                        // которая сопровождается воспроизведение соответствующего звука,
-                        // то, звук подбора бонуса не воспроизводим
+                        // которая сопровождается воспроизведение соответствующего звука, то
+                        // звук подбора бонуса не воспроизводим
                         playSound = false;
                     }
                     DisplayPointsText(powerUpObj.BonusPoints.ToString(), powerUpObj.GetBounds(Config.SubPixelSize));

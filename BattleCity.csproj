@@ -180,6 +180,7 @@
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <None Include="app.config" />
+    <None Include="CHANGELOG.md" />
     <None Include="Data\Fonts\prstart.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

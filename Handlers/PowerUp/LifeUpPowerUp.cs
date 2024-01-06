@@ -19,7 +19,7 @@ namespace BattleCity.Handlers.PowerUp
                 Player player = battleGround.GetPlayerByUnit(unit);
                 if (player != null)
                 {
-                    battleGround.AddPlayerLifeUp(player, 1, false);
+                    battleGround.AddPlayerLifeUp(player, 1, true);
                 }
             }
             else if (unit is EnemyUnit enemyUnit)

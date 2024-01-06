@@ -364,6 +364,14 @@ namespace BattleCity.VisualComponents
 
                 new ExtrasMenuOption(
                     NextOptionNumber() +
+                    GetNormalizedOptionName(nameof(content.GameConfig.ForceRandomEnemies)),
+                    content.GameConfig.ForceRandomEnemies.ToString(),
+                    originalConfig.ForceRandomEnemies.ToString(),
+                    new string[] { bool.TrueString, bool.FalseString }, null,
+                    (p) => content.GameConfig.ForceRandomEnemies = bool.Parse(p)),
+
+                new ExtrasMenuOption(
+                    NextOptionNumber() +
                     GetNormalizedOptionName(nameof(content.GameConfig.PlayerDefaultUpgradeLevel)),
                     content.GameConfig.PlayerDefaultUpgradeLevel.ToString(),
                     originalConfig.PlayerDefaultUpgradeLevel.ToString(),

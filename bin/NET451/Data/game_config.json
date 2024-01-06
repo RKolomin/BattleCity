@@ -2,7 +2,6 @@
   "Name": "BATTLE CITY",
   "RandomSeed": 112233,
   "HiScoreValue": 20000,
-  "DirectoryPath": "Data",
   "BonusedEnemySpawnChance": 15,
   "MaxBonusedUnitsOnField": 1,
   "TowerTempDefenseDuration": 20,
@@ -42,6 +41,7 @@
   "StageCompleteDelayTime": 3,
   "MaxEnemiesPerStage": 40,
   "MaxActiveEnemy": 4,
+  "ForceRandomEnemies": false,
   "EnemySpawnPositionCount": 3,
   "EnemySpawnLocations": [
     "0, 0",
