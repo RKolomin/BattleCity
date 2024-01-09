@@ -23,6 +23,11 @@ namespace BattleCity.Video
         void DrawChessboard(int x, int y, int w, int h, int cellSize, int cellColor1, int cellColor2);
 
         /// <summary>
+        /// Отрисовать сетку
+        /// </summary>
+        void DrawGridLines(int x, int y, int w, int h, int cellSize, int color);
+
+        /// <summary>
         /// Отрисовать кирпичный оверлей
         /// </summary>
         void DrawBrickWallOverlay(float x, float y, float width, float height, float zoomX, float zoomY, int color);

@@ -71,7 +71,7 @@
   "BattleGroundHexColor": "#FF000000",
   "TextHexColor": "#FFDCDCDC",
   "ChessCellHexColor1": "FF000000",
-  "ChessCellHexColor2": "FF0A0A0A",
+  "ChessCellHexColor2": "FF0F0F0F",
   "FieldWidth": 52,
   "FieldHeight": 52,
   "SubPixelSize": 10,

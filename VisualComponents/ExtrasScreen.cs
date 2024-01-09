@@ -217,12 +217,12 @@ namespace BattleCity.VisualComponents
 
                 new ExtrasMenuOption(
                     NextOptionNumber() +
-                    GetNormalizedOptionName(nameof(content.GameConfig.EmenySpawnDelay)),
-                    content.GameConfig.EmenySpawnDelay.ToString(),
-                    originalConfig.EmenySpawnDelay.ToString(),
+                    GetNormalizedOptionName(nameof(content.GameConfig.EnemySpawnDelay)),
+                    content.GameConfig.EnemySpawnDelay.ToString(),
+                    originalConfig.EnemySpawnDelay.ToString(),
                     Enumerable.Range(0, 11).Select(s => (s * 30).ToString()).ToArray(),
                     "INSTANTLY",
-                    (p) => content.GameConfig.EmenySpawnDelay = int.Parse(p)),
+                    (p) => content.GameConfig.EnemySpawnDelay = int.Parse(p)),
 
                 new ExtrasMenuOption(
                     NextOptionNumber() +

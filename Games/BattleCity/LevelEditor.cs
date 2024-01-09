@@ -74,13 +74,16 @@ namespace BattleCity
         int gameTime = 0;
 
         // размер шаматной клетки
-        int chessCellSize = 1;
+        int chessCellSize = 2;
 
         // признак отображения настройки вражеских юнитов
         bool showConfigEnemies;
 
         // признак отображения шахматки
         bool showChessboard = true;
+
+        // признак отображения сетки
+        bool showGridLines;
 
         // текущий индекс объектов для создания
         int currentCreatableObjectIndex = -1;
@@ -611,6 +614,11 @@ namespace BattleCity
                 showChessboard = !showChessboard;
             }
 
+            else if (controllerHub.Keyboard.IsDown(KeyboardKey.G))
+            {
+                showGridLines = !showGridLines;
+            }
+
             else if (controllerHub.Keyboard.IsDown(KeyboardKey.F11))
             {
                 if (definedEnemyList != null && definedEnemyList.Count > 0)
@@ -899,7 +907,13 @@ namespace BattleCity
             font.DrawString("F4  SAVE STAGE", x, y, textColor);
             y += h * 2;
 
-            font.DrawString("F5  CHESS SIZE " + chessCellSize, x, y, textColor); y += h;
+            if (showGridLines)
+                font.DrawString(" G  HIDE GRID", x, y, textColor);
+            else
+                font.DrawString(" G  SHOW GRID", x, y, textColor);
+            y += h;
+
+            font.DrawString("F5  GRID SIZE " + chessCellSize, x, y, textColor); y += h;
             font.DrawString("F6  NEXT TYPE", x, y, textColor); y += h;
             font.DrawString("F7  PREV TYPE", x, y, textColor); y += h;
             if (showChessboard)
@@ -993,6 +1007,12 @@ namespace BattleCity
                     ColorConverter.ToInt32(Config.ChessCellHexColor2));
 
             DrawStageObjects(left, top);
+
+            if (showGridLines)
+                graphics.DrawGridLines(left, top, width, height,
+                    Config.SubPixelSize * chessCellSize * 2,
+                    Colors.White);
+
             block.Draw(graphics, left, top, Config.SubPixelSize, gameTime, Config.PlaceholderFlickerFrames);
             DrawStageHints(left, top);
         }

@@ -1755,7 +1755,7 @@ namespace BattleCity
             // 190 - level * 4 - (player_count - 1) * 20
             //int frames = 190 - (stageNumber -1 ) * 4 - (NumActivePlayers - 1) * 20;
 
-            int frames = (Config.SpawnAnimationDuration + Config.EmenySpawnDelay) - (stageNumber - 1) * 4 - (NumActivePlayers - 1) * 20;
+            int frames = (Config.SpawnAnimationDuration + Config.EnemySpawnDelay) - (stageNumber - 1) * 4 - (NumActivePlayers - 1) * 20;
             spawnEnemyDelayFrames = Math.Max(0, frames);
 
             #endregion
@@ -2156,7 +2156,7 @@ namespace BattleCity
 
                 sp.Reset(Config.SpawnAnimationDuration);
                 if (sp.SpawnObject != null && sp.SpawnObject.Type.HasFlag(GameObjectType.Enemy))
-                    sp.ShowDelay = Config.EmenySpawnDelay;
+                    sp.ShowDelay = Config.EnemySpawnDelay;
             }
         }
 

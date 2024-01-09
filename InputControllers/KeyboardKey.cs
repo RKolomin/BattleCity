@@ -29,16 +29,32 @@
         public const int D8 = (int)SlimDX.DirectInput.Key.D8;
         public const int D9 = (int)SlimDX.DirectInput.Key.D9;
 
-        public const int W = (int)SlimDX.DirectInput.Key.W;
-        public const int S = (int)SlimDX.DirectInput.Key.S;
         public const int A = (int)SlimDX.DirectInput.Key.A;
-        public const int D = (int)SlimDX.DirectInput.Key.D;
-
-        public const int Z = (int)SlimDX.DirectInput.Key.Z;
-        public const int X = (int)SlimDX.DirectInput.Key.X;
-        public const int C = (int)SlimDX.DirectInput.Key.C;
-        public const int V = (int)SlimDX.DirectInput.Key.V;
         public const int B = (int)SlimDX.DirectInput.Key.B;
+        public const int C = (int)SlimDX.DirectInput.Key.C;
+        public const int D = (int)SlimDX.DirectInput.Key.D;
+        public const int E = (int)SlimDX.DirectInput.Key.E;
+        public const int F = (int)SlimDX.DirectInput.Key.F;
+        public const int G = (int)SlimDX.DirectInput.Key.G;
+        public const int H = (int)SlimDX.DirectInput.Key.H;
+        public const int I = (int)SlimDX.DirectInput.Key.I;
+        public const int J = (int)SlimDX.DirectInput.Key.J;
+        public const int K = (int)SlimDX.DirectInput.Key.K;
+        public const int L = (int)SlimDX.DirectInput.Key.L;
+        public const int M = (int)SlimDX.DirectInput.Key.M;
+        public const int N = (int)SlimDX.DirectInput.Key.N;
+        public const int O = (int)SlimDX.DirectInput.Key.O;
+        public const int P = (int)SlimDX.DirectInput.Key.P;
+        public const int Q = (int)SlimDX.DirectInput.Key.Q;
+        public const int R = (int)SlimDX.DirectInput.Key.R;
+        public const int S = (int)SlimDX.DirectInput.Key.S;
+        public const int T = (int)SlimDX.DirectInput.Key.T;
+        public const int U = (int)SlimDX.DirectInput.Key.U;
+        public const int V = (int)SlimDX.DirectInput.Key.V;
+        public const int W = (int)SlimDX.DirectInput.Key.W;
+        public const int X = (int)SlimDX.DirectInput.Key.X;
+        public const int Y = (int)SlimDX.DirectInput.Key.Y;
+        public const int Z = (int)SlimDX.DirectInput.Key.Z;        
 
         public const int Escape = (int)SlimDX.DirectInput.Key.Escape;
         public const int Return = (int)SlimDX.DirectInput.Key.Return;

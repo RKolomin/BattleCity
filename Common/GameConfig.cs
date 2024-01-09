@@ -57,7 +57,10 @@ namespace BattleCity.Common
             set
             {
                 randomSeed = value;
-                Random = new Random(randomSeed);
+                if (randomSeed != 0)
+                    Random = new Random(randomSeed);
+                else
+                    Random = new Random();
             }
         }
 
@@ -245,7 +248,7 @@ namespace BattleCity.Common
         /// <summary>
         /// Задержка в кадрах перед последующим появлением вражеского юнита
         /// </summary>
-        public int EmenySpawnDelay { get; set; }
+        public int EnemySpawnDelay { get; set; }
 
         /// <summary>
         /// Продолжительность анимации появления юнита (в кадрах)

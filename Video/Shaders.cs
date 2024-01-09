@@ -145,7 +145,7 @@ technique deftech
 ";
 
         /// <summary>
-        /// Scanlines
+        /// Шейдер эффекта Scanlines
         /// </summary>
         public static readonly string Scanlines = @"
 uniform float     iTime;
@@ -185,5 +185,30 @@ technique deftech
 
 ";
 
+        /// <summary>
+        /// Шейдер сетки
+        /// </summary>
+        public static readonly string GridLines = @"
+uniform float2    iVPSize = float2(1,1);
+uniform float4    color = 1;
+uniform float     lineThickness = 1;
+uniform float     gridIncrement = .1;
+
+void mainImage( out float4 fragColor : COLOR0, in float2 fragCoord : TEXCOORD0 )
+{
+    float2 uv = fragCoord.xy;
+    uv.x *= iVPSize.x / iVPSize.y;
+    float gridLineThickness = lineThickness / iVPSize.y;
+    uv =  step( fmod(uv, gridIncrement), float2(gridLineThickness, gridLineThickness) );    
+    fragColor = color * (uv.x+uv.y);
+}
+
+technique deftech
+{
+    pass tpass
+    {
+        PixelShader = compile ps_3_0 mainImage();    
+    }
+}";
     }
 }

@@ -17,6 +17,7 @@ namespace BattleCity.Video
         private Effect shader;
         private Effect chessBoardShader;
         private Effect brickWallShader;
+        private Effect gridLinesShader;
         private Device Device => deviceContext.Device;
 
         /// <summary>
@@ -33,6 +34,7 @@ namespace BattleCity.Video
             shader = Effect.FromString(Device, Shaders.GameObject, ShaderFlags.None);
             chessBoardShader = Effect.FromString(Device, Shaders.ChessBoard, ShaderFlags.None);
             brickWallShader = Effect.FromString(Device, Shaders.BrickWall, ShaderFlags.None);
+            gridLinesShader = Effect.FromString(Device, Shaders.GridLines, ShaderFlags.None);
         }
 
         /// <summary>
@@ -43,6 +45,7 @@ namespace BattleCity.Video
             shader?.OnResetDevice();
             chessBoardShader?.OnResetDevice();
             brickWallShader?.OnResetDevice();
+            gridLinesShader?.OnResetDevice();
         }
 
         /// <summary>
@@ -53,6 +56,7 @@ namespace BattleCity.Video
             shader?.OnLostDevice();
             chessBoardShader?.OnLostDevice();
             brickWallShader?.OnLostDevice();
+            gridLinesShader?.OnLostDevice();
         }
 
         /// <inheritdoc/>
@@ -83,6 +87,34 @@ namespace BattleCity.Video
             Device.DrawUserPrimitives(PrimitiveType.TriangleStrip, 2, rect);
             chessBoardShader.EndPass();
             chessBoardShader.End();
+        }
+
+        /// <inheritdoc/>
+        public void DrawGridLines(int x, int y, int w, int h, int cellSize, int color)
+        {
+            TransformedTextured[] rect =
+            {
+                new TransformedTextured(x - 0.5f, y - 0.5f, 0, 1, 0, 0),
+                new TransformedTextured(x + w - 0.5f, y - 0.5f, 0, 1, 1, 0),
+                new TransformedTextured(x - 0.5f, y + h - 0.5f, 0, 1, 0, 1),
+                new TransformedTextured(x + w - 0.5f, y + h - 0.5f, 0, 1, 1, 1)
+            };
+
+            Device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+            Device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
+            Device.SetRenderState(RenderState.AlphaBlendEnable, true);
+            Device.SetTexture(0, null);
+            Device.VertexFormat = TransformedTextured.Format;
+
+            gridLinesShader.SetValue("color", new Color4(color));
+            gridLinesShader.SetValue("gridIncrement", 1.0f / (w / cellSize));
+            //gridLinesShader.SetValue("rows", h / cellSize);
+            gridLinesShader.SetValue("iVPSize", new Vector2(w, h));
+            gridLinesShader.Begin();
+            gridLinesShader.BeginPass(0);
+            Device.DrawUserPrimitives(PrimitiveType.TriangleStrip, 2, rect);
+            gridLinesShader.EndPass();
+            gridLinesShader.End();
         }
 
         /// <inheritdoc/>
