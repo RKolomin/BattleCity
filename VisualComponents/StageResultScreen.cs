@@ -63,9 +63,9 @@ namespace BattleCity.VisualComponents
         private const int DelayBetweenSubTotals = 30;
         private int showTotalsRemainFrames;
         private int remainDelayBetweenSubTotals;
+        private int screenWidth, screenHeight;
         private readonly int textHeight;
         private readonly int textLineHeight;
-        private readonly int screenWidth, screenHeight;
         private readonly int HiScoreLabelColor = Colors.Tomato;
         private readonly int HiScoreValueColor = Colors.Orange;
         private readonly int TextColor;
@@ -86,8 +86,6 @@ namespace BattleCity.VisualComponents
             this.graphics = graphics;
             this.gameRecord = gameRecord;
             this.content = content;
-            screenWidth = deviceContext.DeviceWidth;
-            screenHeight = deviceContext.DeviceHeight;
             font = graphics.CreateFont(content.GetFont(content.CommonConfig.DefaultFontSize));
             textHeight = Convert.ToInt32(font.MeasureString("L").Height * 1d);
             textLineHeight = Convert.ToInt32(font.MeasureString("L").Height * 1.4d);
@@ -104,6 +102,9 @@ namespace BattleCity.VisualComponents
         /// <param name="stageResult"></param>
         public void SetResult(StageResult stageResult)
         {
+            screenWidth = deviceContext.DeviceWidth;
+            screenHeight = deviceContext.DeviceHeight;
+
             this.stageResult = stageResult;
 
             // формируем список иконок вражеских юнитов

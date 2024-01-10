@@ -362,3 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 *.cache
+.vs/BattleCity/v17/.suo
+bin/NET451/BattleCity.exe
+bin/NET451/app_settings.json
+obj/NET451/BattleCity.exe
+obj/NET451/BattleCity.pdb

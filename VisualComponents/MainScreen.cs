@@ -296,9 +296,12 @@ namespace BattleCity
             DrawHiScore();
 
             selector.UpdateAnimation(frameNumber);
-            graphics.BeginDrawGameObjects();
-            graphics.DrawGameObject(0, 0, selector, 0, 1);
-            graphics.EndDrawGameObjects();
+            if (end_text_y_coord == text_y)
+            {
+                graphics.BeginDrawGameObjects();
+                graphics.DrawGameObject(0, 0, selector, 0, 1);
+                graphics.EndDrawGameObjects();
+            }
 
             foreach (var option in options)
                 option.Draw(font);
