@@ -999,6 +999,9 @@ namespace BattleCity
                             players[i].Unit.Gun?.ReloadGun(true);
                             if (Config.ResetUnitUpgradesOnStageStart)
                                 players[i].Unit.UpgradeLevel = Config.PlayerDefaultUpgradeLevel;
+
+                            if (players[i].Unit.Type.HasFlag(GameObjectType.Ship))
+                                CreateShip(players[i].Unit);
                         }
                     }
                 }

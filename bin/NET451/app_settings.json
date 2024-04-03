@@ -4,5 +4,5 @@
   "FullScreen": true,
   "SaveAspectRatio": false,
   "ScanlinesFxLevel": 15,
-  "ContinuousFire": false
+  "ContinuousFire": true
 }
