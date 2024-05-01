@@ -2168,6 +2168,7 @@ namespace BattleCity
         /// </summary>
         private void ProcessControllerKeys()
         {
+            bool skipPauseBtn = false;
             if (!IsGamePaused)
             {
                 var player1 = players.FirstOrDefault(x => x != null && x.Id == 1);
@@ -2180,6 +2181,7 @@ namespace BattleCity
                         if (Config.AllowPlayerJoin && player2 != null && player2.Lifes > 1 &&
                             controllerHub.IsKeyPressed(1, ButtonNames.Start, true))
                         {
+                            skipPauseBtn = true;
                             JoinPlayer(1, player2);
                         }
                     }
@@ -2191,6 +2193,7 @@ namespace BattleCity
                     if (Config.AllowPlayerJoin && player2 != null && player2.Lifes > 1 &&
                            controllerHub.IsKeyPressed(1, ButtonNames.Start, true))
                     {
+                        skipPauseBtn = true;
                         JoinPlayer(1, player2);
                     }
                 }
@@ -2201,6 +2204,7 @@ namespace BattleCity
                         if (Config.AllowPlayerJoin && player1 != null && player1.Lifes > 1 &&
                             controllerHub.IsKeyPressed(2, ButtonNames.Start, true))
                         {
+                            skipPauseBtn = true;
                             JoinPlayer(2, player1);
                         }
                     }
@@ -2212,12 +2216,13 @@ namespace BattleCity
                     if (Config.AllowPlayerJoin && player1 != null && player1.Lifes > 1 &&
                             controllerHub.IsKeyPressed(2, ButtonNames.Start, true))
                     {
+                        skipPauseBtn = true;
                         JoinPlayer(2, player1);
                     }
                 }
             }
 
-            ProcessGlobalInput();
+            ProcessGlobalInput(skipPauseBtn);
         }
 
         /// <summary>
@@ -2352,7 +2357,7 @@ namespace BattleCity
         /// <summary>
         /// Глобальная обработка нажатий ввода
         /// </summary>
-        private void ProcessGlobalInput()
+        private void ProcessGlobalInput(bool skipPauseBtn)
         {
             if (gamePauseOverlay.IsVisible)
             {
@@ -2360,7 +2365,7 @@ namespace BattleCity
                     ResumeGame();
             }
 
-            else if (controllerHub.IsKeyPressed(0, ButtonNames.Pause, true))
+            else if (!skipPauseBtn && controllerHub.IsKeyPressed(0, ButtonNames.Pause, true))
             {
                 PauseGame();
             }
