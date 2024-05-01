@@ -367,3 +367,5 @@ bin/NET451/BattleCity.exe
 bin/NET451/app_settings.json
 obj/NET451/BattleCity.exe
 obj/NET451/BattleCity.pdb
+/.vs/BattleCity/v17/.suo
+/obj/NET451/BattleCity.csproj.AssemblyReference.cache
