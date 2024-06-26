@@ -118,12 +118,17 @@ namespace BattleCity.Video
         }
 
         /// <inheritdoc/>
-        public void DrawBrickWallOverlay(float x, float y, float width, float height, float zoomX, float zoomY, int color)
+        public void DrawBrickWallOverlay(
+            float x, float y, 
+            float width, float height, 
+            float zoomX, float zoomY, 
+            int color, 
+            float txOffsetX = 0, float txOffsetY = 0)
         {
-            float tu0 = 0;
-            float tv0 = 0;
-            float tu1 = 1;
-            float tv1 = 1;
+            float tu0 = 0 + txOffsetX;
+            float tv0 = 0 + txOffsetY;
+            float tu1 = 1 + txOffsetX;
+            float tv1 = 1 + txOffsetY;
             brickWallShader.SetValue("zoom", new Vector2(zoomX, zoomY));
             brickWallShader.SetValue("brickColor", new Color4(color));
 

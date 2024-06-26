@@ -59,7 +59,6 @@
         public const int Escape = (int)SlimDX.DirectInput.Key.Escape;
         public const int Return = (int)SlimDX.DirectInput.Key.Return;
         public const int Enter = (int)SlimDX.DirectInput.Key.Return;
-        public const int NumberPadEnter = (int)SlimDX.DirectInput.Key.NumberPadEnter;
         public const int Space = (int)SlimDX.DirectInput.Key.Space;
         public const int LeftControl = (int)SlimDX.DirectInput.Key.LeftControl;
         public const int LeftAlt = (int)SlimDX.DirectInput.Key.LeftAlt;
@@ -78,5 +77,21 @@
         public const int LeftArrow = (int)SlimDX.DirectInput.Key.LeftArrow;
         public const int RightArrow = (int)SlimDX.DirectInput.Key.RightArrow;
         public const int DownArrow = (int)SlimDX.DirectInput.Key.DownArrow;
+
+        public const int NumberPadEnter = (int)SlimDX.DirectInput.Key.NumberPadEnter;
+        public const int NumberPadPlus = (int)SlimDX.DirectInput.Key.NumberPadPlus;
+        public const int NumberPadMinus = (int)SlimDX.DirectInput.Key.NumberPadMinus;
+        public const int NumberPadSlash = (int)SlimDX.DirectInput.Key.NumberPadSlash;
+        public const int NumberPadStar = (int)SlimDX.DirectInput.Key.NumberPadStar;
+        public const int NumberPad0 = (int)SlimDX.DirectInput.Key.NumberPad0;
+        public const int NumberPad1 = (int)SlimDX.DirectInput.Key.NumberPad1;
+        public const int NumberPad2 = (int)SlimDX.DirectInput.Key.NumberPad2;
+        public const int NumberPad3 = (int)SlimDX.DirectInput.Key.NumberPad3;
+        public const int NumberPad4 = (int)SlimDX.DirectInput.Key.NumberPad4;
+        public const int NumberPad5 = (int)SlimDX.DirectInput.Key.NumberPad5;
+        public const int NumberPad6 = (int)SlimDX.DirectInput.Key.NumberPad6;
+        public const int NumberPad7 = (int)SlimDX.DirectInput.Key.NumberPad7;
+        public const int NumberPad8 = (int)SlimDX.DirectInput.Key.NumberPad8;
+        public const int NumberPad9 = (int)SlimDX.DirectInput.Key.NumberPad9;
     }
 }

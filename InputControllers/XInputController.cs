@@ -85,6 +85,11 @@ namespace BattleCity.InputControllers
             return false;
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         public void Dispose()
         {
             controller = null;

@@ -146,6 +146,7 @@ namespace BattleCity
         /// </summary>
         public GameForm(ILogger logger = null, bool resetContent = false)
         {
+            Application.ApplicationExit += Application_ApplicationExit;
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             this.logger = logger;
             InitializeComponent();
@@ -251,7 +252,7 @@ namespace BattleCity
         {
             UnloadGame();
 
-            content = new GameContent(currentContentDirectory, logger);
+            content = new GameContent(Path.GetFullPath(currentContentDirectory), logger);
 
             SetOptimizedWindowSize();
             CreateDeviceContext();
@@ -590,6 +591,16 @@ namespace BattleCity
             screenTransition.Reset();
             screenTransition.CurrentScreen = GameScreenEnum.None;
             screenTransition.NextScreen = GameScreenEnum.None;
+        }
+
+        /// <summary>
+        /// Обработка события закрытия приложения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            mTerminate = true;
         }
 
         /// <summary>

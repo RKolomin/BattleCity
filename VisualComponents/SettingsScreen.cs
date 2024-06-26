@@ -45,6 +45,10 @@ namespace BattleCity.VisualComponents
         readonly Rectangle fontSize;
         readonly string sndTestName, musicTestName;
         readonly int titleTextColor = Colors.White;
+        readonly float titleTxScaleX = 6.93f;
+        readonly float titleTxScaleY = 2.537f;
+        readonly float titleTxOffsetX = 0.001f;
+        readonly float titleTxOffsetY = 0.0021f;
         int screenWidth, screenHeight;
         const string title = "SETTINGS";
         Rectangle titleRect;
@@ -157,9 +161,10 @@ namespace BattleCity.VisualComponents
 
                 titleFont.DrawString(title, titleRect, DrawStringFormat.Top | DrawStringFormat.Center | DrawStringFormat.WordBreak, titleTextColor);
                 graphics.DrawBrickWallOverlay(
-                    0, titleRect.Y, screenWidth, screenHeight, 
-                    fontSize.Height * 4, fontSize.Height * 2,
-                    ColorConverter.ToInt32(content.CommonConfig.LogoFontColor));
+                    0, titleRect.Y, screenWidth, screenHeight,
+                    fontSize.Height * titleTxScaleX, fontSize.Height * titleTxScaleY,
+                    ColorConverter.ToInt32(content.CommonConfig.LogoFontColor),
+                    titleTxOffsetX, titleTxOffsetY);
 
                 selector.UpdateAnimation(frameNumber);
                 graphics.BeginDrawGameObjects();

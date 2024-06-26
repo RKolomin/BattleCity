@@ -2,7 +2,7 @@
   "SoundLevel": 1.0,
   "MusicLevel": 1.0,
   "FullScreen": true,
-  "SaveAspectRatio": false,
-  "ScanlinesFxLevel": 15,
+  "SaveAspectRatio": true,
+  "ScanlinesFxLevel": 0,
   "ContinuousFire": true
 }

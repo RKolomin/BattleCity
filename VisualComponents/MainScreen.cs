@@ -33,6 +33,14 @@ namespace BattleCity
         GameAchievements gameRecord;
         readonly int versionTextColor = new Color4(1, 0.3f, 0.3f, 0.3f).ToArgb();
         readonly int titleTextColor = new Color4(1, 1, 1, 1).ToArgb();
+        //readonly float titleTxScaleX = 4f;
+        //readonly float titleTxScaleY = 2f;
+        //readonly float titleTxOffsetX = 0;
+        //readonly float titleTxOffsetY = 0;
+        readonly float titleTxScaleX = 6.3f;
+        readonly float titleTxScaleY = 2.27f;
+        readonly float titleTxOffsetX = -0.004f;
+        readonly float titleTxOffsetY = 0.0018f;
         int screenWidth, screenHeight;
         int text_y;
         int selector_y;
@@ -98,11 +106,11 @@ namespace BattleCity
 
             var verticalCenter = screenHeight / 2;
             selector_y = verticalCenter + screenHeight / 2;
-            selector_y += (selectorSize - text_h) / 2;
+            selector_y += (selectorSize + text_h / 2) / 2;
             //selector_x = Convert.ToInt32(screenWidth / 4.25);
             text_x = screenWidth / 3;
             selector_x = text_x - Convert.ToInt32(text_h * 1.5);
-            end_text_y_coord = verticalCenter + (text_h - fontSize.Height) / 2;
+            end_text_y_coord = verticalCenter + text_h;
             text_y = end_text_y_coord + screenHeight / 2;
 
             selector = new UserBattleUnit(null)
@@ -124,7 +132,13 @@ namespace BattleCity
 
             InitOptions();
 
-            titleRect = new Rectangle(0, verticalCenter + text_h + 2 * fontSize.Height, screenWidth, screenHeight);
+            int x = 4 * fontSize.Width;
+            int width = screenWidth - 2 * x;
+            titleRect = new Rectangle(
+                x,
+                verticalCenter + text_h + 2 * fontSize.Height,
+                width,
+                screenHeight);
         }
 
         /// <summary>
@@ -179,12 +193,14 @@ namespace BattleCity
         private void ProcessInput()
         {
             if (controllerHub.Keyboard.IsDown(KeyboardKey.NumberPadEnter) ||
+                controllerHub.Keyboard.IsDown(KeyboardKey.Escape) ||
                 controllerHub.IsKeyPressed(1, ButtonNames.Start, true) ||
                 controllerHub.IsKeyPressed(1, ButtonNames.Attack, true))
             {
                 if (!IsAnimationComplete)
                 {
                     SkipAnimation();
+                    return;
                 }
                 else
                     ActivateOption(options[selectedOptionIndex]);
@@ -271,6 +287,8 @@ namespace BattleCity
             }
         }
 
+
+
         /// <summary>
         /// Отрисовка
         /// </summary>
@@ -283,15 +301,16 @@ namespace BattleCity
 
             string titleText = content.GameConfig.Name; // Application.ProductName.ToUpper()
 
-            titleFont.DrawString(titleText, 
-                titleRect.X, titleRect.Y, titleRect.Width, titleRect.Height, 
-                DrawStringFormat.Top | DrawStringFormat.Center | DrawStringFormat.WordBreak, 
+            titleFont.DrawString(titleText,
+                titleRect.X, titleRect.Y, titleRect.Width, titleRect.Height,
+                DrawStringFormat.Top | DrawStringFormat.Center | DrawStringFormat.WordBreak,
                 titleTextColor);
 
             graphics.DrawBrickWallOverlay(
-                0, titleRect.Y, screenWidth, screenHeight, 
-                fontSize.Height * 4, fontSize.Height * 2,
-                ColorConverter.ToInt32(content.CommonConfig.LogoFontColor));
+                0, titleRect.Y, screenWidth, screenHeight,
+                fontSize.Height * titleTxScaleX, fontSize.Height * titleTxScaleY,
+                ColorConverter.ToInt32(content.CommonConfig.LogoFontColor),
+                titleTxOffsetX, titleTxOffsetY);
 
             DrawHiScore();
 
@@ -334,9 +353,9 @@ namespace BattleCity
                 hiScoreText = new string(' ', maxScoreTextLength - hiScoreText.Length) + hiScoreText;
 
             font.DrawString(
-                $"I- {player1HiScore}", 
+                $"I- {player1HiScore}",
                 x, y, screenThirdWidth, screenHeight,
-                drawTextFormat, 
+                drawTextFormat,
                 titleTextColor);
 
             font.DrawString($"HI- {hiScoreText}",
@@ -345,7 +364,7 @@ namespace BattleCity
 
             font.DrawString($"II- {player2HiScore}",
                 3 * x + 2 * screenThirdWidth, y, screenThirdWidth, screenHeight,
-                drawTextFormat, 
+                drawTextFormat,
                 titleTextColor);
         }
 

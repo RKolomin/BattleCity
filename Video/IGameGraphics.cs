@@ -30,7 +30,7 @@ namespace BattleCity.Video
         /// <summary>
         /// Отрисовать кирпичный оверлей
         /// </summary>
-        void DrawBrickWallOverlay(float x, float y, float width, float height, float zoomX, float zoomY, int color);
+        void DrawBrickWallOverlay(float x, float y, float width, float height, float zoomX, float zoomY, int color, float txOffsetX = 0, float txOffsetY = 0);
 
         /// <summary>
         /// Отрисовать прямоугольник с заданным цветом

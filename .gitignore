@@ -369,3 +369,6 @@ obj/NET451/BattleCity.exe
 obj/NET451/BattleCity.pdb
 /.vs/BattleCity/v17/.suo
 /obj/NET451/BattleCity.csproj.AssemblyReference.cache
+/bin
+/bin
+/obj

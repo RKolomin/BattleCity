@@ -58,6 +58,6 @@
         /// <summary>
         /// Цвет лого
         /// </summary>
-        public string LogoFontColor { get; set; } = "#FF893629";
+        public string LogoFontColor { get; set; } = "#FFAF290E"; // #FF893629
     }
 }

@@ -135,6 +135,7 @@
     <Compile Include="Handlers\PowerUp\SuperWeaponPowerUp.cs" />
     <Compile Include="Handlers\PowerUp\WeaponUpgradePowerUp.cs" />
     <Compile Include="Helpers\ConstructionHelper.cs" />
+    <Compile Include="Helpers\IndexGenerator.cs" />
     <Compile Include="Helpers\Windows\WinConsole.cs" />
     <Compile Include="InputControllers\ControllerButton.cs" />
     <Compile Include="InputControllers\ButtonsMap.cs" />

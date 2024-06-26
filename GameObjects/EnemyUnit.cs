@@ -15,12 +15,16 @@ namespace BattleCity.GameObjects
         /// </summary>
         public int ExtraBonus { get; set; }
 
+        public int Index { get; set; }
+
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="config">Игровые конфигурации</param>
-        public EnemyUnit(GameConfig config) : base(config)
+        /// <param name="index">Индекс</param>
+        public EnemyUnit(GameConfig config, int index) : base(config)
         {
+            Index = index;
         }
 
         /// <inheritdoc/>

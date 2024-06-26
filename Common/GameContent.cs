@@ -150,7 +150,7 @@ namespace BattleCity.Common
                 }
                 if (IsDefaultDirectory(soundsDirectory))
                 {
-                    using (var repo = new SoundRepository(logger, texturesDirectory, TexturesFileName, RepositoryCapacity))
+                    using (var repo = new SoundRepository(logger, soundsDirectory, TexturesFileName, RepositoryCapacity))
                     {
                         GameContentGenerator.CreateDefaultSoundResources(repo, CommonConfig);
                         repo.Save();

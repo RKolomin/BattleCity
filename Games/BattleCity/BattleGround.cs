@@ -74,6 +74,7 @@ namespace BattleCity
         List<IPowerUpHandler> powerUpHandlers = new List<IPowerUpHandler>();
         List<TextBlock> textBlocks = new List<TextBlock>();
         ConstructionHelper constructionHelper;
+        IndexGenerator enemyIndexGenerator = new IndexGenerator();
         IAudioReader stageStartSnd;
 
         #region очередь появления вражеских юнитов, их активное количество и статусы
@@ -442,21 +443,30 @@ namespace BattleCity
         }
 
         /// <summary>
-        /// Добавить на поле объект прокачки
+        /// Удалить бонус с поля
+        /// </summary>
+        private void RemovePowerUpFromField()
+        {
+            var tmpPowerup = gameObjects.FirstOrDefault(p => p.Type.HasFlag(GameObjectType.PowerUp));
+            if (tmpPowerup != null && tmpPowerup is AnimationObject powerUpToRemove)
+            {
+                gameObjects.Remove(powerUpToRemove);
+                animations.Remove(powerUpToRemove);
+            }
+        }
+
+        /// <summary>
+        /// Добавить бонус на поле
         /// </summary>
         private void AddPowerUpObject()
         {
             if (Config.MaxActivePowerUpsOnField == 0)
                 return;
+            int maxCount = Config.MaxActivePowerUpsOnField;// * Math.Max(1, NumActivePlayers);
             if (Config.MaxActivePowerUpsOnField > 0
-                && gameObjects.Count(p => p.Type.HasFlag(GameObjectType.PowerUp)) >= Config.MaxActivePowerUpsOnField * Math.Max(1, NumActivePlayers))
+                && gameObjects.Count(p => p.Type.HasFlag(GameObjectType.PowerUp)) >= maxCount)
             {
-                var tmpPowerup = gameObjects.FirstOrDefault(p => p.Type.HasFlag(GameObjectType.PowerUp));
-                if (tmpPowerup != null && tmpPowerup is AnimationObject powerUpToRemove)
-                {
-                    gameObjects.Remove(powerUpToRemove);
-                    animations.Remove(powerUpToRemove);
-                }
+                RemovePowerUpFromField();
             }
 
             var powerups = content.GameObjects.GetAll(p => p != null && p.Type.HasFlag(GameObjectType.PowerUp)).ToList();
@@ -763,7 +773,7 @@ namespace BattleCity
                 return null;
             }
 
-            EnemyUnit enemy = new EnemyUnit(Config);
+            EnemyUnit enemy = new EnemyUnit(Config, enemyIndexGenerator.Next());
             enemy.CopyFrom(preset);
 
             if (!enemy.Type.HasFlag(GameObjectType.Enemy))
@@ -1006,6 +1016,8 @@ namespace BattleCity
                     }
                 }
             }
+
+            enemyIndexGenerator.Reset(1);
 
             stageCompleteOverlay.Hide();
             gameOverOverlay.Hide();

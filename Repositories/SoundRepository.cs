@@ -47,13 +47,13 @@ namespace BattleCity.Repositories
                     {
                         item.FileExists = true;
                     }
-                    if (!string.IsNullOrEmpty(AlterContentDirectory) && File.Exists(GetFileFullpath(AlterContentDirectory, item.File)))
+                    else if (!string.IsNullOrEmpty(AlterContentDirectory) && File.Exists(GetFileFullpath(AlterContentDirectory, item.File)))
                     {
                         item.FileExists = true;
                     }
                     else
                     {
-                        logger?.WriteLine($"snd_id {item.Id}: file not exists", LogLevel.Warning);
+                        logger?.WriteLine($"snd_id {item.Id}: \"{item.File}\" not exists", LogLevel.Warning);
                     }
                 }
             }
