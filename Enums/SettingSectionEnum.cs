@@ -9,6 +9,7 @@
         AspectRatioMode,
         ScanlinesFxLevel,
         Extras,
+        Controllers,
         Exit
     }
 }

@@ -19,7 +19,8 @@ namespace BattleCity.Common
         /// <param name="logger">Сервис логирования</param>
         public static void CreateDefaultContent(string contentDirectoryName = "Data", ILogger logger = null)
         {
-            GameContent resx = new GameContent(contentDirectoryName, logger);
+            GameContent resx = new GameContent(logger);
+            resx.Initialize(contentDirectoryName);
 
             resx.GameConfig = CreateDefaultGameConfig(resx.ContentDirectory);
             resx.GameConfig.Save();
@@ -96,6 +97,7 @@ namespace BattleCity.Common
                 PlayerDestroyBaseAllowed = true,
                 ShowGameOverScreen = true,
                 ShowHiScoreScreen = true,
+                ShowExtInGameStatistics = false,
             };
         }
 
@@ -143,7 +145,7 @@ namespace BattleCity.Common
                 TreasureBonusPoints = 500,
                 SubPixelSize = 10,
                 MaxActiveEnemy = 4,             // x ActivePlayers
-                MaxEnemiesPerStage = 40,
+                MaxEnemiesPerStage = 20,
                 EnemySpawnPositionCount = 3,
                 EnemyFirstSpawnPositionIndex = 1,
                 MaxEnemy = 20,
@@ -165,6 +167,7 @@ namespace BattleCity.Common
                 PlayerDestroyBaseAllowed = true,
                 ShowGameOverScreen = true,
                 ShowHiScoreScreen = true,
+                ShowExtInGameStatistics = false,
             };
         }
 

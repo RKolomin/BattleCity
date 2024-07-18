@@ -22,5 +22,10 @@ namespace BattleCity.Common
         /// Объекты поля
         /// </summary>
         public List<BaseGameObject> FieldObjects { get; set; } = new List<BaseGameObject>(256);
+
+        /// <summary>
+        /// Признак генерации случайных юнитов
+        /// </summary>
+        public bool RandomEnemies {  get; set; }
     }
 }

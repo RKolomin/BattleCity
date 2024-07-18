@@ -78,10 +78,13 @@ namespace BattleCity.GameObjects
                 HexColor = nextHexColor;
             }
 
-            if (TextureAnimationTime <= 0)
-                return;
-            if (gameTime % TextureAnimationTime == 0)
-                textureIndex++;
+            if (MoveInertion > 0)
+            {
+                if (TextureAnimationTime <= 0)
+                    return;
+                if (gameTime % TextureAnimationTime == 0)
+                    textureIndex++;
+            }
         }
 
         /// <summary>

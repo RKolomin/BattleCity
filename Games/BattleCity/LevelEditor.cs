@@ -233,8 +233,6 @@ namespace BattleCity
             enemyBlockWidth = Config.SubPixelSize * 16;
             enemyBlockHeight = Config.SubPixelSize * 8;
             vertBlocksCount = deviceContext.DeviceHeight / enemyBlockHeight;
-            if (deviceContext.DeviceHeight % enemyBlockHeight > 0)
-                vertBlocksCount++;
         }
 
         /// <summary>
@@ -762,6 +760,26 @@ namespace BattleCity
                 }
                 hasChanges = true;
             }
+            else if (controllerHub.Keyboard.IsDown(KeyboardKey.F8))
+            {
+                if (currentStage.RandomEnemies)
+                {
+                    currentStage.RandomEnemies = false;
+
+                    var stageEnemies = new SpawnQueueBattleUnit[Config.MaxEnemy];
+                    for (int i = 0; i < stageEnemies.Length; i++)
+                    {
+                        stageEnemies[i] = enemies[i] == null ? CreateDefaultEnemy() : enemies[i].Clone();
+                    }
+                    currentStage.Enemies = new List<SpawnQueueBattleUnit>(stageEnemies);
+                }
+                else
+                {
+                    currentStage.RandomEnemies = true;
+                    //enemies = null;
+                    currentStage.Enemies = null;
+                }
+            }
             else if (controllerHub.Keyboard.IsDown(KeyboardKey.F11))
             {
                 showConfigEnemies = false;
@@ -1049,40 +1067,14 @@ namespace BattleCity
                 graphics.DrawBorderRect(left + x, top + y, enemyBlockHeight, enemyBlockHeight, borderColor);
                 graphics.DrawBorderRect(left + x, top + y, enemyBlockWidth, enemyBlockHeight, borderColor);
 
-                var enemyBlockObj = i >= enemies.Length ? null : enemies[i];
-
-                var textColor = enemyBlockObj == null ? Colors.Gray : Colors.Green;
-                font.DrawString(
-                    (i + 1).ToString(),
-                    left + x, top + y, enemyBlockHeight, enemyBlockHeight,
-                    DrawStringFormat.VerticalCenter | DrawStringFormat.Center, textColor);
-
-                if (enemyBlockObj != null)
+                if (currentStage.RandomEnemies)
                 {
-                    if (enemyBlockObj.ExtraBonus > 0)
-                    {
-                        enemyStatTextBlocks.Add(new TextBlock(
-                            smallFont,
-                            left + x + enemyBlockHeight + 2,
-                            top + y + 2,
-                            enemyBlockHeight - 4,
-                            enemyBlockHeight - 4,
-                            Colors.DodgerBlue,
-                            "B:" + enemyBlockObj.ExtraBonus.ToString())
-                        { Tag = 1 });
-                    }
+                    font.DrawString(
+                        (i + 1).ToString(),
+                        left + x, top + y, enemyBlockHeight, enemyBlockHeight,
+                        DrawStringFormat.VerticalCenter | DrawStringFormat.Center, Colors.Green);
 
-                    enemyStatTextBlocks.Add(new TextBlock(
-                        smallFont,
-                        left + x + enemyBlockHeight + 2,
-                        top + y + 2,
-                        enemyBlockHeight - 4,
-                        enemyBlockHeight - 4,
-                        Colors.DarkOliveGreen,
-                        "H:" + enemyBlockObj.Health.ToString())
-                    { Tag = 0 });
-
-                    var gameObject = definedEnemyList.FirstOrDefault(p => p.Name == enemyBlockObj.Name);
+                    var gameObject = content.GameObjects.GetByName("random");
                     if (gameObject != null)
                     {
                         gameObject.Width = enemyBlockHeight - 2 * enemyDrawBlockPadding;
@@ -1091,10 +1083,61 @@ namespace BattleCity
                         enemyDrawBlocks.Add(new EnemyDrawBlock()
                         {
                             DrawObject = gameObject,
-                            HexColor = GetEnemyHexColor(gameObject, enemyBlockObj, "#FFFFFF"),
+                            HexColor = "#FFFFFF",
                             X = left + x + enemyBlockHeight + enemyDrawBlockPadding,
-                            Y = top + y + 2 * enemyDrawBlockPadding,
+                            Y = top + y + enemyDrawBlockPadding,
                         });
+                    }
+                }
+                else
+                {
+                    var enemyBlockObj = i >= enemies.Length ? null : enemies[i];
+
+                    var textColor = enemyBlockObj == null ? Colors.Gray : Colors.Green;
+                    font.DrawString(
+                        (i + 1).ToString(),
+                        left + x, top + y, enemyBlockHeight, enemyBlockHeight,
+                        DrawStringFormat.VerticalCenter | DrawStringFormat.Center, textColor);
+
+                    if (enemyBlockObj != null)
+                    {
+                        if (enemyBlockObj.ExtraBonus > 0)
+                        {
+                            enemyStatTextBlocks.Add(new TextBlock(
+                                smallFont,
+                                left + x + enemyBlockHeight + 2,
+                                top + y + 2,
+                                enemyBlockHeight - 4,
+                                enemyBlockHeight - 4,
+                                Colors.DodgerBlue,
+                                "B:" + enemyBlockObj.ExtraBonus.ToString())
+                            { Tag = 1 });
+                        }
+
+                        enemyStatTextBlocks.Add(new TextBlock(
+                            smallFont,
+                            left + x + enemyBlockHeight + 2,
+                            top + y + 2,
+                            enemyBlockHeight - 4,
+                            enemyBlockHeight - 4,
+                            Colors.DarkOliveGreen,
+                            "H:" + enemyBlockObj.Health.ToString())
+                        { Tag = 0 });
+
+                        var gameObject = definedEnemyList.FirstOrDefault(p => p.Name == enemyBlockObj.Name);
+                        if (gameObject != null)
+                        {
+                            gameObject.Width = enemyBlockHeight - 2 * enemyDrawBlockPadding;
+                            gameObject.Height = enemyBlockHeight - 2 * enemyDrawBlockPadding;
+
+                            enemyDrawBlocks.Add(new EnemyDrawBlock()
+                            {
+                                DrawObject = gameObject,
+                                HexColor = GetEnemyHexColor(gameObject, enemyBlockObj, "#FFFFFF"),
+                                X = left + x + enemyBlockHeight + enemyDrawBlockPadding,
+                                Y = top + y + 2 * enemyDrawBlockPadding,
+                            });
+                        }
                     }
                 }
             }
@@ -1175,25 +1218,42 @@ namespace BattleCity
 
             y += h * 2;
 
-            font.DrawString("F1  DECREASE HP", x, y, textColor); y += h;
-            font.DrawString("F2  INCREASE HP", x, y, textColor); y += h;
-            y += h;
-            font.DrawString("F3  DECREASE BONUS", x, y, textColor); y += h;
-            font.DrawString("F4  INCREASE BONUS", x, y, textColor); y += h;
-            y += h;
-            font.DrawString("F5  ANIMATION", x, y, textColor); y += h;
-            y += h;
-            font.DrawString("F6  NEXT TYPE", x, y, textColor); y += h;
-            font.DrawString("F7  PREV TYPE", x, y, textColor); y += h;
-            y += h;
-            font.DrawString("F11 STAGE EDITOR", x, y, textColor);
-            y += h;
-            y += h;
-            for (int i = 0; i < definedEnemyList.Count; i++)
+            if (currentStage.RandomEnemies)
             {
-                string count = enemies.Count(p => p.Name == definedEnemyList[i].Name).ToString("00");
-                font.DrawString($"{count} x {definedEnemyList[i].Name}", x, y, textColor);
+                font.DrawString("F8  TURN OFF RANDOM", x, y, textColor);
                 y += h;
+                font.DrawString("F11 STAGE EDITOR", x, y, textColor);
+            }
+            else
+            {
+                font.DrawString("F1  DECREASE HP", x, y, textColor); y += h;
+                font.DrawString("F2  INCREASE HP", x, y, textColor); y += h;
+                //y += h;
+                font.DrawString("F3  DECREASE BONUS", x, y, textColor); y += h;
+                font.DrawString("F4  INCREASE BONUS", x, y, textColor); y += h;
+                //y += h;
+                font.DrawString("F5  ANIMATE", x, y, textColor); y += h;
+                //y += h;
+                font.DrawString("F6  NEXT TYPE", x, y, textColor); y += h;
+                font.DrawString("F7  PREV TYPE", x, y, textColor); y += h;
+                font.DrawString("F8  SET ALL RANDOM", x, y, textColor);
+
+                y += h;
+                font.DrawString("F11 STAGE EDITOR", x, y, textColor);
+                y += h;
+                y += h;
+                font.DrawString("H - HEALTH POWER", x, y, Colors.DarkOliveGreen); y += h;
+                font.DrawString("B - BONUS COUNT", x, y, Colors.DodgerBlue); y += h;
+                y += h;
+
+
+                for (int i = 0; i < definedEnemyList.Count; i++)
+                {
+                    string count = enemies.Count(p => p.Name == definedEnemyList[i].Name).ToString("00");
+                    font.DrawString($"{count} x {definedEnemyList[i].Name}", x, y, textColor);
+                    y += h;
+                }
+
             }
         }
 

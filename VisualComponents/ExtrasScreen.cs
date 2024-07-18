@@ -4,7 +4,6 @@ using BattleCity.Extensions;
 using BattleCity.InputControllers;
 using BattleCity.Logging;
 using BattleCity.Video;
-using SlimDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +28,7 @@ namespace BattleCity.VisualComponents
         GameContent content;
         readonly GameConfig originalConfig;
         const string title = "EXTRAS";
-        const string ModNamePrefix = "* ";
+        const string ModNamePrefix = "MOD ";
         const string ModOptionTag = "MOD";
         const string ExitGameOption = "EXIT";
         const string Tank1990PresetOption = "TANK X 1990 PRESET";
@@ -37,6 +36,7 @@ namespace BattleCity.VisualComponents
         const string LoadDefaultsOption = "RESTORE DEFAULTS";
         const string SaveConfigOption = "SAVE CONFIG";
         const string ModsDirectoryName = "Mods";
+        const string NavKeysTip = "LEFT/RIGHT: EDIT  BACKSPACE: RESET  UP/DN/PGUP/PGDN: NAVIGATION";
         Rectangle titleRect;
         Rectangle fontSize;
         Rectangle optionsClipRect;
@@ -44,7 +44,7 @@ namespace BattleCity.VisualComponents
         IGameFont titleFont;
         IGameFont hintFont;
         int selectedOptionIndex = 0;
-        int lineHeight;
+        int listViewItemHeight;
         readonly int activeOptionTextColor = Colors.Tomato;
         readonly int titleTextColor = Colors.White;
         readonly int changedOptionTextColor = Colors.Orange;
@@ -82,11 +82,9 @@ namespace BattleCity.VisualComponents
         {
             screenWidth = deviceContext.DeviceWidth;
             screenHeight = deviceContext.DeviceHeight;
-
-            lineHeight = Convert.ToInt32(fontSize.Height * 1.8f);
+            listViewItemHeight = Convert.ToInt32(fontSize.Height * 1.8f);
 
             int titleFontSize = Convert.ToInt32(screenHeight / 9d);
-
             titleFont = graphics.CreateFont(content.GetFont(titleFontSize));
 
             var top = (int)(fontSize.Height * 1.9f);
@@ -96,7 +94,6 @@ namespace BattleCity.VisualComponents
             optionsClipRect = new Rectangle(fontSize.Height * 2, optionsTop, screenWidth, screenHeight - fontSize.Height * 2 - optionsTop);
 
             LoadModList();
-
             CreateOptions();
         }
 
@@ -474,6 +471,14 @@ namespace BattleCity.VisualComponents
                     new string[] { bool.TrueString, bool.FalseString }, null,
                     (p) => content.GameConfig.ShowHiScoreScreen = bool.Parse(p)),
 
+                new ExtrasMenuOption(
+                    NextOptionNumber() +
+                    GetNormalizedOptionName(nameof(content.GameConfig.ShowExtInGameStatistics)),
+                    content.GameConfig.ShowExtInGameStatistics.ToString(),
+                    originalConfig.ShowExtInGameStatistics.ToString(),
+                    new string[] { bool.TrueString, bool.FalseString }, null,
+                    (p) => content.GameConfig.ShowExtInGameStatistics = bool.Parse(p)),
+
                 //new ExtrasMenuOption() { Text = "LOAD TANK 1990" },
                 //new ExtrasMenuOption() { Text = "RESTORE DEFAULTS" },
                 //new ExtrasMenuOption() { Text = "EXIT" }
@@ -487,7 +492,7 @@ namespace BattleCity.VisualComponents
 
             if (!content.IsDefaultContentDirectory)
             {
-                options.Add(new ExtrasMenuOption() { Text = LoadDefaultGameOption, Tag = ModOptionTag });
+                options.Add(new ExtrasMenuOption() { Text = LoadDefaultGameOption });
                 options.Add(new ExtrasMenuOption() { Text = SaveConfigOption });
             }
 
@@ -533,7 +538,7 @@ namespace BattleCity.VisualComponents
             }
             else if (controllerHub.Keyboard.IsDown(KeyboardKey.PageDown))
             {
-                int maxVisibleItems = Convert.ToInt32(optionsClipRect.Height / (double)lineHeight);
+                int maxVisibleItems = Convert.ToInt32(optionsClipRect.Height / (double)listViewItemHeight);
                 selectedOptionIndex += maxVisibleItems;
                 if (selectedOptionIndex >= options.Count)
                     selectedOptionIndex = 0;
@@ -542,7 +547,7 @@ namespace BattleCity.VisualComponents
             }
             else if (controllerHub.Keyboard.IsDown(KeyboardKey.PageUp))
             {
-                int maxVisibleItems = Convert.ToInt32(optionsClipRect.Height / (double)lineHeight);
+                int maxVisibleItems = Convert.ToInt32(optionsClipRect.Height / (double)listViewItemHeight);
                 selectedOptionIndex -= maxVisibleItems;
                 if (selectedOptionIndex < 0)
                     selectedOptionIndex = options.Count - 1;
@@ -550,12 +555,16 @@ namespace BattleCity.VisualComponents
                     selectedOptionIndex -= selectedOptionIndex % maxVisibleItems;
             }
             else if (controllerHub.IsKeyPressed(1, ButtonNames.Right, true) ||
-                    controllerHub.IsLongPressed(1, ButtonNames.Right))
+                    controllerHub.IsLongPressed(1, ButtonNames.Right) ||
+                    controllerHub.Keyboard.IsDown(KeyboardKey.RightArrow) ||
+                    controllerHub.Keyboard.IsLongPress(KeyboardKey.RightArrow))
             {
                 SetNextOptionValue(options[selectedOptionIndex]);
             }
             else if (controllerHub.IsKeyPressed(1, ButtonNames.Left, true) ||
-                    controllerHub.IsLongPressed(1, ButtonNames.Left))
+                    controllerHub.IsLongPressed(1, ButtonNames.Left) ||
+                    controllerHub.Keyboard.IsDown(KeyboardKey.LeftArrow) ||
+                    controllerHub.Keyboard.IsLongPress(KeyboardKey.LeftArrow))
             {
                 SetPrevOptionValue(options[selectedOptionIndex]);
             }
@@ -565,7 +574,8 @@ namespace BattleCity.VisualComponents
                 options[selectedOptionIndex].Reset();
             }
 
-            else if (controllerHub.IsKeyPressed(1, ButtonNames.Cancel, true))
+            else if (controllerHub.IsKeyPressed(1, ButtonNames.Cancel, true) ||
+                    controllerHub.Keyboard.IsDown(KeyboardKey.F12))
             {
                 Exit?.Invoke(false);
             }
@@ -602,7 +612,14 @@ namespace BattleCity.VisualComponents
                 }
                 else if (option.Text == LoadDefaultGameOption)
                 {
-                    LoadMod?.Invoke(null);
+                    var config = GameContentGenerator.CreateDefaultGameConfig();
+                    content.GameConfig.CopyFrom(config);
+                    //content.Clear();
+                    //content.Initialize(Path.GetFullPath(GameContent.DefaultContentDirectory));
+                    //content.Load(deviceContext.Device);
+                    CreateOptions();
+                    selectedOptionIndex = 0;
+                    Exit?.Invoke(true);
                 }
                 else if (option.Text == Tank1990PresetOption)
                 {
@@ -610,7 +627,7 @@ namespace BattleCity.VisualComponents
                     content.GameConfig.CopyFrom(config);
                     CreateOptions();
                     selectedOptionIndex = 0;
-                    //Exit?.Invoke(true);
+                    Exit?.Invoke(true);
                 }
                 else if (option.Text == LoadDefaultsOption)
                 {
@@ -642,10 +659,10 @@ namespace BattleCity.VisualComponents
         private void DrawOptions()
         {
             var currentViewport = deviceContext.Device.Viewport;
-            deviceContext.Device.Viewport = new Viewport(
+            deviceContext.Device.Viewport = new SlimDX.Direct3D9.Viewport(
                 optionsClipRect.X, optionsClipRect.Y, optionsClipRect.Width, optionsClipRect.Height);
 
-            int maxVisibleItems = Convert.ToInt32(optionsClipRect.Height / (double)lineHeight);
+            int maxVisibleItems = Convert.ToInt32(optionsClipRect.Height / (double)listViewItemHeight);
             int firstVisibleIndex = selectedOptionIndex < maxVisibleItems
                 ? 0
                 : (selectedOptionIndex / maxVisibleItems) * maxVisibleItems;
@@ -655,7 +672,7 @@ namespace BattleCity.VisualComponents
             {
                 var option = options[i];
                 option.X = optionsClipRect.X;
-                option.Y = optionsClipRect.Y + n * lineHeight;
+                option.Y = optionsClipRect.Y + n * listViewItemHeight;
 
                 if (option.IsChanged)
                 {
@@ -672,8 +689,8 @@ namespace BattleCity.VisualComponents
 
             deviceContext.Device.Viewport = currentViewport;
 
-            hintFont.DrawString("LEFT/RIGHT: EDIT  BACKSPACE: RESET  UP/DN/PGUP/PGDN: NAVIGATION",
-                optionsClipRect.X, Convert.ToInt32(screenHeight - lineHeight), hintTextColor);
+            hintFont.DrawString(NavKeysTip,
+                optionsClipRect.X, Convert.ToInt32(screenHeight - listViewItemHeight), hintTextColor);
         }
 
         /// <summary>
@@ -699,11 +716,6 @@ namespace BattleCity.VisualComponents
         /// </summary>
         public void Dispose()
         {
-            if (deviceContext != null)
-            {
-                deviceContext = null;
-            }
-
             if (font != null)
             {
                 font.Dispose();
@@ -722,6 +734,7 @@ namespace BattleCity.VisualComponents
                 hintFont = null;
             }
 
+            deviceContext = null;
             controllerHub = null;
             content = null;
             options = null;

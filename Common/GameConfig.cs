@@ -353,6 +353,11 @@ namespace BattleCity.Common
         public bool ShowHiScoreScreen { get; set; }
 
         /// <summary>
+        /// Показывать расширенную статистику во время активной игры
+        /// </summary>
+        public bool ShowExtInGameStatistics { get; set; }
+
+        /// <summary>
         /// Цвет заднего плана
         /// </summary>
         public string BackgroundHexColor
@@ -501,6 +506,11 @@ namespace BattleCity.Common
                 stream.Write(data);
                 stream.Close();
             }
+        }
+
+        public void ResetRandom()
+        {
+            RandomSeed = randomSeed;
         }
     }
 }

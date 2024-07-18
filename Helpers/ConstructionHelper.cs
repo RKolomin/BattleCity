@@ -106,6 +106,7 @@ namespace BattleCity.Helpers
                !p.Type.HasFlag(GameObjectType.Enemy) &&
                !p.Type.HasFlag(GameObjectType.Player) &&
                !p.Type.HasFlag(GameObjectType.Tower) &&
+               !p.Type.HasFlag(GameObjectType.Ship) &&
                p.GetAABB(Config.SubPixelSize).OverlapsOrContains(aabb));
         }
 

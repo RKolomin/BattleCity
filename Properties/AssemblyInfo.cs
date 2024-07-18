@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Battle City. Based on original NES Battle City game")]
 [assembly: AssemblyDescription("Based on original NES Battle City game")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("LM FUTURE")]
+[assembly: AssemblyCompany("LM FUTURE / https://github.com/RKolomin/BattleCity.git")]
 [assembly: AssemblyProduct("Battle City")]
 [assembly: AssemblyCopyright("Copyright © Kolomin Rinat")]
 [assembly: AssemblyTrademark("")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер сборки и номер редакции по умолчанию.
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.3.3")]
-[assembly: AssemblyFileVersion("1.0.3.3")]
+[assembly: AssemblyVersion("1.0.3.4")]
+[assembly: AssemblyFileVersion("1.0.3.4")]

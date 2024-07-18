@@ -36,6 +36,7 @@ namespace BattleCity.VisualComponents
         IGameGraphics graphics;
         GameContent content;
         ExtrasScreen extrasScreen;
+        ControllerScreen controllerScreen;
         List<SettingMenuOption> options = new List<SettingMenuOption>();
         int text_y;
         int selector_y;
@@ -98,6 +99,8 @@ namespace BattleCity.VisualComponents
             extrasScreen = new ExtrasScreen(deviceContext, controllerHub, graphics, logger, content);
             extrasScreen.Exit += ExtrasScreen_Exit;
             extrasScreen.LoadMod += ExtrasScreen_LoadMod;
+            controllerScreen = new ControllerScreen(gameApplication, deviceContext, controllerHub, graphics, logger, content);
+            controllerScreen.Exit += ControllerScreen_Exit;
             Initialize();
         }
 
@@ -108,11 +111,19 @@ namespace BattleCity.VisualComponents
         private void ExtrasScreen_LoadMod(string contentDirectoryName)
         {
             gameApplication.SetContentDirectory(contentDirectoryName);
+            Initialize();
         }
 
         private void ExtrasScreen_Exit(bool returnToMainScreen)
         {
             extrasScreen.IsVisible = false;
+            if (returnToMainScreen)
+                Exit?.Invoke();
+        }
+
+        private void ControllerScreen_Exit(bool returnToMainScreen)
+        {
+            controllerScreen.IsVisible = false;
             if (returnToMainScreen)
                 Exit?.Invoke();
         }
@@ -143,6 +154,8 @@ namespace BattleCity.VisualComponents
         public void Reset()
         {
             selectedOptionIndex = 0;
+            controllerScreen.IsVisible = false;
+            extrasScreen.IsVisible = false;
             selector.Y = selector_y + (selectedOptionIndex * text_h);
         }
 
@@ -154,6 +167,10 @@ namespace BattleCity.VisualComponents
             if (extrasScreen.IsVisible)
             {
                 extrasScreen.Render();
+            }
+            else if (controllerScreen.IsVisible)
+            {
+                controllerScreen.Render();
             }
             else
             {
@@ -270,7 +287,8 @@ namespace BattleCity.VisualComponents
                 SetPrevOptionValue(options[selectedOptionIndex]);
             }
 
-            else if (controllerHub.IsKeyPressed(1, ButtonNames.Cancel, true))
+            else if (controllerHub.IsKeyPressed(1, ButtonNames.Cancel, true) ||
+                    controllerHub.Keyboard.IsDown(KeyboardKey.F12))
             {
                 Exit?.Invoke();
             }
@@ -290,10 +308,10 @@ namespace BattleCity.VisualComponents
                     option.DisplayValue = MusicLevelText;
                     soundEngine.PlayMusic(musicTestName, true);
                     return;
-                case SettingSectionEnum.ContinuousFire:
-                    gameApplication.ContinuousFire = !gameApplication.ContinuousFire;
-                    option.DisplayValue = ContinuousFireText;
-                    return;
+                //case SettingSectionEnum.ContinuousFire:
+                //    gameApplication.ContinuousFire = !gameApplication.ContinuousFire;
+                //    option.DisplayValue = ContinuousFireText;
+                //    return;
                 case SettingSectionEnum.FullScreenMode:
                     gameApplication.SwitchFullScreenMode();
                     option.DisplayValue = FullScreenModeText;
@@ -323,10 +341,10 @@ namespace BattleCity.VisualComponents
                     option.DisplayValue = MusicLevelText;
                     soundEngine.PlayMusic(musicTestName, true);
                     return;
-                case SettingSectionEnum.ContinuousFire:
-                    gameApplication.ContinuousFire = !gameApplication.ContinuousFire;
-                    option.DisplayValue = ContinuousFireText;
-                    return;
+                //case SettingSectionEnum.ContinuousFire:
+                //    gameApplication.ContinuousFire = !gameApplication.ContinuousFire;
+                //    option.DisplayValue = ContinuousFireText;
+                //    return;
                 case SettingSectionEnum.FullScreenMode:
                     gameApplication.SwitchFullScreenMode();
                     option.DisplayValue = FullScreenModeText;
@@ -357,6 +375,10 @@ namespace BattleCity.VisualComponents
                     extrasScreen.Reset();
                     extrasScreen.IsVisible = true;
                     return;
+                case SettingSectionEnum.Controllers:
+                    controllerScreen.Reset();
+                    controllerScreen.IsVisible = true;
+                    return;
             }
         }
 
@@ -372,13 +394,15 @@ namespace BattleCity.VisualComponents
             y += text_h;
             AddScreenOption($"MUSIC LEVEL: ", content.GameConfig.TextColor, text_x, y, SettingSectionEnum.MusicLevel, MusicLevelText);
             y += text_h;
-            AddScreenOption($"CONTINUOUS FIRE: ", content.GameConfig.TextColor, text_x, y, SettingSectionEnum.ContinuousFire, ContinuousFireText);
-            y += text_h;
             AddScreenOption($"FULL SCREEN: ", content.GameConfig.TextColor, text_x, y, SettingSectionEnum.FullScreenMode, FullScreenModeText);
             y += text_h;
             AddScreenOption($"SAVE ASPECT RATIO: ", content.GameConfig.TextColor, text_x, y, SettingSectionEnum.AspectRatioMode, AspectRatioModeText);
             y += text_h;
             AddScreenOption($"SCANLINES FX LEVEL: ", content.GameConfig.TextColor, text_x, y, SettingSectionEnum.ScanlinesFxLevel, ScanlinesFxLevelText);
+            y += text_h;
+            //AddScreenOption($"CONTINUOUS FIRE: ", content.GameConfig.TextColor, text_x, y, SettingSectionEnum.ContinuousFire, ContinuousFireText);
+            //y += text_h;
+            AddScreenOption($"CONTROL", content.GameConfig.TextColor, text_x, y, SettingSectionEnum.Controllers);
             y += text_h;
             AddScreenOption($"EXTRAS", content.GameConfig.TextColor, text_x, y, SettingSectionEnum.Extras);
             y += text_h;
@@ -432,6 +456,13 @@ namespace BattleCity.VisualComponents
                 extrasScreen.LoadMod -= ExtrasScreen_LoadMod;
                 extrasScreen.Dispose();
                 extrasScreen = null;
+            }
+
+            if(controllerScreen != null)
+            {
+                controllerScreen.Exit -= ControllerScreen_Exit;
+                controllerScreen.Dispose();
+                controllerScreen = null;
             }
 
             DestroyTitleFont();

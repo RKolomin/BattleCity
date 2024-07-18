@@ -56,7 +56,8 @@ namespace BattleCity.Common
         /// <summary>
         /// Признак контент директории по умолчанию
         /// </summary>
-        public bool IsDefaultContentDirectory => string.Compare(ContentDirectory, DefaultContentDirectory, true) == 0;
+        public bool IsDefaultContentDirectory
+            => string.Compare(ContentDirectory, Path.GetFullPath(DefaultContentDirectory), true) == 0;
 
         private ILogger logger;
         private PrivateFontCollection fontCollection = new PrivateFontCollection();
@@ -108,9 +109,13 @@ namespace BattleCity.Common
         /// <summary>
         /// Конструктор
         /// </summary>
-        public GameContent(string contentDirectory, ILogger logger)
+        public GameContent(ILogger logger)
         {
             this.logger = logger;
+        }
+
+        public void Initialize(string contentDirectory)
+        {
             ContentDirectory = string.IsNullOrEmpty(contentDirectory) ? DefaultContentDirectory : contentDirectory;
 
             string gameConfigDirectory = ContentDirectory;

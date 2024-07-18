@@ -60,7 +60,7 @@ namespace BattleCity.Video
         }
 
         /// <inheritdoc/>
-        public void DrawChessboard(int x, int y, int w, int h, 
+        public void DrawChessboard(int x, int y, int w, int h,
             int cellSize, int cellColor1, int cellColor2)
         {
             TransformedTextured[] rect =
@@ -119,10 +119,10 @@ namespace BattleCity.Video
 
         /// <inheritdoc/>
         public void DrawBrickWallOverlay(
-            float x, float y, 
-            float width, float height, 
-            float zoomX, float zoomY, 
-            int color, 
+            float x, float y,
+            float width, float height,
+            float zoomX, float zoomY,
+            int color,
             float txOffsetX = 0, float txOffsetY = 0)
         {
             float tu0 = 0 + txOffsetX;
@@ -384,6 +384,12 @@ namespace BattleCity.Video
             {
                 chessBoardShader.Dispose();
                 chessBoardShader = null;
+            }
+
+            if (gridLinesShader != null)
+            {
+                gridLinesShader.Dispose();
+                gridLinesShader = null;
             }
         }
     }

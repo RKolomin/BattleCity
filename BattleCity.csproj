@@ -199,6 +199,7 @@
     <Compile Include="Video\VertexStructs.cs" />
     <Compile Include="Common\BlockPlaceholder.cs" />
     <Compile Include="Video\GameGraphics.cs" />
+    <Compile Include="VisualComponents\ControllerScreen.cs" />
     <Compile Include="VisualComponents\EnemyDrawBlock.cs" />
     <Compile Include="VisualComponents\ExtrasMenuOption.cs" />
     <Compile Include="VisualComponents\ExtrasScreen.cs" />

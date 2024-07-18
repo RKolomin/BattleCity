@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Rectangle = System.Drawing.Rectangle;
+using SlimDX.Direct3D9;
 
 namespace BattleCity
 {
@@ -74,12 +75,13 @@ namespace BattleCity
         List<IPowerUpHandler> powerUpHandlers = new List<IPowerUpHandler>();
         List<TextBlock> textBlocks = new List<TextBlock>();
         ConstructionHelper constructionHelper;
-        IndexGenerator enemyIndexGenerator = new IndexGenerator();
+        readonly IndexGenerator enemyIndexGenerator = new IndexGenerator();
         IAudioReader stageStartSnd;
 
         #region очередь появления вражеских юнитов, их активное количество и статусы
 
         Queue<SpawnQueueBattleUnit> enemyQueue = new Queue<SpawnQueueBattleUnit>();
+        int initialEnemyCount;
         int enemySpawnPositionIndex;
         int enemiesCount;
         int stageMaxActiveEnemies;
@@ -113,6 +115,8 @@ namespace BattleCity
         IGameFont pointsTextFont;
         // текущий номер уровня
         int stageNumber;
+        // количество вражеских юнитов в списке уровня
+        int stageEnemyCount;
         // начальное количество игроков
         readonly int initialNumPlayers;
         // текущее состояние уровня
@@ -251,11 +255,13 @@ namespace BattleCity
 
             GameObjectType targetType = unit.IsUser ? GameObjectType.Player : GameObjectType.Enemy;
             var allUnits = content.GameObjects.GetAll(p => p != null && p.Type.HasFlag(targetType));
+            var maxUpgradeUnitLevel = allUnits.Max(p => p.UpgradeLevel);
             GameFieldObject unitUpgadePreset = null;
+            int maxUpgradeLevel = Config.UnitMaxUpgradeLevel < 0 ? maxUpgradeUnitLevel : Config.UnitMaxUpgradeLevel;
 
             if (levelAdd > 0)
             {
-                int nextUpgradeLevel = Math.Min(Config.UnitMaxUpgradeLevel, unit.UpgradeLevel + levelAdd);
+                int nextUpgradeLevel = Math.Min(maxUpgradeLevel, unit.UpgradeLevel + levelAdd);
 
                 unitUpgadePreset = allUnits.FirstOrDefault(p => p.UpgradeLevel == nextUpgradeLevel);
                 if (unitUpgadePreset == null)
@@ -411,9 +417,8 @@ namespace BattleCity
         /// <param name="unit"></param>
         public void RemoveShipFromUnit(BattleUnit unit)
         {
-            if (!unit.Type.HasFlag(GameObjectType.Ship))
-                return;
-            unit.Type ^= GameObjectType.Ship;
+            if (unit.Type.HasFlag(GameObjectType.Ship))
+                unit.Type ^= GameObjectType.Ship;
 
             var shipAnimation = animations.FirstOrDefault(p => p.AttachedObject == unit && p.Type.HasFlag(GameObjectType.Ship));
             if (shipAnimation != null)
@@ -550,9 +555,14 @@ namespace BattleCity
         /// </summary>
         private void EnsureEnemyQueue()
         {
+            Func<GameFieldObject, bool> filter = 
+                p => Config.ForceRandomEnemies && Config.MaxEnemiesPerStage != stageEnemyCount
+                ? p.Type.HasFlag(GameObjectType.Enemy)
+                : p.Type.HasFlag(GameObjectType.Enemy) && p.UpgradeLevel == 0;
+
             // получаем все возможные типы вражеских юнитов
             var allEnemyPresets = content.GameObjects
-                            .GetAll(p => p.Type.HasFlag(GameObjectType.Enemy) && p.UpgradeLevel == 0)
+                            .GetAll(filter)
                             .ToList();
 
             // дополняем очередь вражеских юнитов, которые будут появляться на поле
@@ -579,15 +589,24 @@ namespace BattleCity
                     }
                 }
 
-                // определяем количество жизней
-                const int addDifficultFromStageNumber = 2;
-                if (stageNumber > addDifficultFromStageNumber && unit.FlashHexColors != null && unit.FlashHexColors.Length > 1)
+                // определяем количество жизней динамически
+                if (Config.ForceRandomEnemies && Config.MaxEnemiesPerStage != stageEnemyCount)
                 {
-                    int d = (stageNumber + 1) - addDifficultFromStageNumber;
-                    if (Config.Random.Next(0, 101) < d * 10)
-                        enemy.Health = Config.Random.Next(enemy.ExtraBonus > 0 ? 0 : 1, unit.FlashHexColors.Length + 1);
+                    var d = (10d * Config.Random.Next(0, enemyQueue.Count + 1)) / initialEnemyCount;
+                    int minHealth = enemy.ExtraBonus > 0 ? 0 : 1;
+                    d += minHealth;
+                    enemy.Health = Config.Random.Next(minHealth, Convert.ToInt32(d) + 1);
                 }
-
+                else
+                {
+                    const int addDifficultFromStageNumber = 2;
+                    if (stageNumber > addDifficultFromStageNumber && unit.FlashHexColors != null && unit.FlashHexColors.Length > 1)
+                    {
+                        int d = (stageNumber + 1) - addDifficultFromStageNumber;
+                        if (Config.Random.Next(0, 101) < d * 10)
+                            enemy.Health = Config.Random.Next(enemy.ExtraBonus > 0 ? 0 : 1, unit.FlashHexColors.Length + 1);
+                    }
+                }
                 enemyQueue.Enqueue(enemy);
             }
         }
@@ -888,14 +907,15 @@ namespace BattleCity
 
             // задаем количество вражеских юнитов по умолчанию
             enemiesCount = Config.MaxEnemy;
+            stageEnemyCount = stage != null && stage.Enemies != null ? stage.Enemies.Count : 0;
 
-            if (stage != null && stage.Enemies != null)
+            if (stage != null && stage.Enemies != null && !stage.RandomEnemies)
             {
                 // задаем количество вражеских юнитов, определенных в уровне (stage)
                 enemiesCount = stage.Enemies.Count;
             }
 
-            if (stage != null && stage.Enemies != null && stage.Enemies.Count > 0 && !Config.ForceRandomEnemies)
+            if (stage != null && !stage.RandomEnemies && stage.Enemies != null && stage.Enemies.Count > 0 && !Config.ForceRandomEnemies)
             {
                 // подготавливаем очередь вражеских юнитов,
                 // определенных в уровне (stage)
@@ -953,20 +973,15 @@ namespace BattleCity
             // Проверяем наличие достаточного количества вражеских юнитов
             if (stage == null || stage.Enemies == null || stage.Enemies.Count == 0 || enemyQueue.Count == 0)
             {
+                initialEnemyCount = Config.MaxEnemy;
                 EnsureEnemyQueue();
+                enemiesCount = enemyQueue.Count;
             }
+
+            initialEnemyCount = enemiesCount;
 
             // подготовим позиции появления юнитов
             InitSpawnPositions();
-
-            foreach (var player in players)
-            {
-                if (player != null && player.IsAlive && player.Unit != null &&
-                    player.Unit.Type.HasFlag(GameObjectType.Ship))
-                {
-                    CreateShip(player.Unit);
-                }
-            }
 
             return true;
         }
@@ -990,33 +1005,6 @@ namespace BattleCity
         /// <param name="hardReset">Полный сброс</param>
         public void Reset(bool hardReset)
         {
-            if (hardReset)
-            {
-                CreatePlayers();
-            }
-            else
-            {
-                for (int i = 0; i < players.Length; i++)
-                {
-                    if (players[i] != null)
-                    {
-                        players[i].Unit.Freeze = 0;
-                        players[i].DestroyedEnemies.Clear();
-                        players[i].Unit.ResetShield();
-                        if (players[i].Lifes > 0)
-                        {
-                            players[i].Unit.IsAlive = true;
-                            players[i].Unit.Gun?.ReloadGun(true);
-                            if (Config.ResetUnitUpgradesOnStageStart)
-                                players[i].Unit.UpgradeLevel = Config.PlayerDefaultUpgradeLevel;
-
-                            if (players[i].Unit.Type.HasFlag(GameObjectType.Ship))
-                                CreateShip(players[i].Unit);
-                        }
-                    }
-                }
-            }
-
             enemyIndexGenerator.Reset(1);
 
             stageCompleteOverlay.Hide();
@@ -1043,6 +1031,36 @@ namespace BattleCity
             respawnPoints.Clear();
             animations.Clear();
             textBlocks.Clear();
+            Config.ResetRandom();
+
+            if (hardReset)
+            {
+                CreatePlayers();
+            }
+            else
+            {
+                for (int i = 0; i < players.Length; i++)
+                {
+                    if (players[i] != null)
+                    {
+                        players[i].Unit.Freeze = 0;
+                        players[i].DestroyedEnemies.Clear();
+                        players[i].Unit.ResetShield();
+                        if (players[i].Lifes > 0)
+                        {
+                            players[i].Unit.IsAlive = true;
+                            players[i].Unit.Gun?.ReloadGun(true);
+                            if (Config.ResetUnitUpgradesOnStageStart)
+                            {
+                                players[i].Unit.UpgradeLevel = Config.PlayerDefaultUpgradeLevel;
+                                if (players[i].Unit.Type.HasFlag(GameObjectType.Ship))
+                                    players[i].Unit.Type ^= GameObjectType.Ship;
+                            }
+
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -1585,6 +1603,12 @@ namespace BattleCity
         /// <param name="playSound">Воспроизводить звук уничтожения</param>
         private void DestroyEnemy(GameFieldObject enemyUnit, bool playSound)
         {
+            foreach (var animationObject in animations.Where(p => p.AttachedObject == enemyUnit))
+            {
+                gameObjects.Remove(animationObject);
+            }
+
+            animations.RemoveAll(p => p.AttachedObject == enemyUnit);
             CreateUnitExplosion(enemyUnit);
             if (playSound)
                 soundEngine.PlaySound(enemyUnit.DestroySndId);
@@ -1675,6 +1699,14 @@ namespace BattleCity
 
             animations.Add(gameObject);
             gameObjects.Add(gameObject);
+        }
+
+        /// <summary>
+        /// Остановить движение всех вражескиъ юнитов
+        /// </summary>
+        private void StopAllEnemyUnits()
+        {
+            battleUnits.ForEach(unit => unit.StopMoving());
         }
 
         /// <summary>
@@ -1902,10 +1934,16 @@ namespace BattleCity
             var allPlayerUnits = content.GameObjects.GetAll(p => p != null && p.Type.HasFlag(GameObjectType.Player));
             var maxUpradedUnit = allPlayerUnits.OrderByDescending(p => p.UpgradeLevel).FirstOrDefault();
             var unitPreset = allPlayerUnits.FirstOrDefault(p => p.UpgradeLevel == player.UpgradeLevel) ?? maxUpradedUnit;
+            var hasShip = player.Unit.Type.HasFlag(GameObjectType.Ship);
             player.Unit.CopyFrom(unitPreset);
             player.Unit.Name = player.PlayerName;
             player.Unit.HexColor = hexColor;
             player.Unit.ForceMoveInertion = false;
+            if (hasShip)
+            {
+                RemoveShipFromUnit(player.Unit);
+                AddShipToUnit(player.Unit);
+            }
         }
 
         /// <summary>
@@ -2387,6 +2425,8 @@ namespace BattleCity
                 if (controllerHub.Keyboard.IsDown(KeyboardKey.F1))
                 {
                     enemyIsActive = !enemyIsActive;
+                    if (!enemyIsActive)
+                        StopAllEnemyUnits();
                 }
 
                 else if (controllerHub.Keyboard.IsDown(KeyboardKey.F2))
@@ -2470,6 +2510,7 @@ namespace BattleCity
         public void FreezeAllActiveEnemies()
         {
             freezeEnemyTime = Config.EnemyFreezeDuration;
+            StopAllEnemyUnits();
         }
 
         /// <summary>
@@ -2587,6 +2628,16 @@ namespace BattleCity
                         }
                     }
                 }
+            }
+            else
+            {
+                battleUnits
+                    .AsParallel()
+                    .ForAll(unit =>
+                    {
+                        if (unit.IsAlive)
+                            unit.UpdateAnimation(gameTime);
+                    });
             }
 
             // обновляем значение времени заморозки
@@ -2933,6 +2984,20 @@ namespace BattleCity
                         fontHeight),
                     DrawStringFormat.Top | DrawStringFormat.Left,
                     Config.TextColor);
+
+                    if (Config.ShowExtInGameStatistics)
+                    {
+                        gamePanelFont.DrawString(
+                            $"{player.DestroyedEnemies.Count}",
+                            new Rectangle(
+                                Left + x,
+                                Top + Height + paddingTop + fontWidth,
+                                maxTextLength,
+                                fontHeight),
+                            DrawStringFormat.Top | DrawStringFormat.Left,
+                            Config.TextColor);
+                    }
+
                     x += maxTextLength + 3 * fontWidth;
                 }
             }
@@ -3000,7 +3065,8 @@ namespace BattleCity
                 icon.SubPixelX = col * 2;
                 icon.SubPixelY = row * 2;
                 icon.Y = y + row * icon.Height;
-                graphics.DrawGameObject(Left, Top, icon, gameTime, Config.SubPixelSize);
+                if (Left + (icon.X + icon.Width) * Config.SubPixelSize < deviceContext.DeviceWidth - 2 * Config.SubPixelSize)
+                    graphics.DrawGameObject(Left, Top, icon, gameTime, Config.SubPixelSize);
             }
 
 

@@ -250,7 +250,11 @@
     "File": "SPAWN_4.PNG",
     "ColorKey": -16777216
   },
-  null,
+  {
+    "Id": 51,
+    "File": "RANDOM.PNG",
+    "ColorKey": -16777216
+  },
   null,
   null,
   null,

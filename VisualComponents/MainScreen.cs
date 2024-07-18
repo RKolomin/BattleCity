@@ -157,7 +157,7 @@ namespace BattleCity
             y += text_h;
             AddScreenOption("LEVEL EDITOR", content.GameConfig.TextColor, text_x, y, GameScreenEnum.LevelEditor);
             y += text_h;
-            AddScreenOption("EXIT", content.GameConfig.TextColor, text_x, y, GameScreenEnum.ExitGame);
+            AddScreenOption("EXIT GAME", content.GameConfig.TextColor, text_x, y, GameScreenEnum.ExitGame);
 
             y += Convert.ToInt32(1.8f * text_h);
             AddScreenOption($"V.{Application.ProductVersion.Replace(".", "")}", versionTextColor, text_x, y, GameScreenEnum.None, false);

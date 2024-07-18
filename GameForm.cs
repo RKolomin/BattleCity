@@ -27,7 +27,7 @@ namespace BattleCity
         readonly AppSettings appSettings;
 
         // игровые рекорды и достижения
-        readonly GameAchievements gameRecord = GameAchievements.Load();
+        GameAchievements gameRecord;
 
         // сервсис логирования
         readonly ILogger logger;
@@ -252,7 +252,9 @@ namespace BattleCity
         {
             UnloadGame();
 
-            content = new GameContent(Path.GetFullPath(currentContentDirectory), logger);
+            content = new GameContent(logger);
+            content.Initialize(Path.GetFullPath(currentContentDirectory));
+            gameRecord = GameAchievements.Load(content.IsDefaultContentDirectory ? "" : content.ContentDirectory);
 
             SetOptimizedWindowSize();
             CreateDeviceContext();
@@ -507,6 +509,7 @@ namespace BattleCity
             appSettings.SaveAspectRatio = SaveAspectRatio;
             appSettings.FullScreen = IsFullScreen;
             appSettings.Save();
+            gameRecord = GameAchievements.Load();
             ShowTitleScreen();
         }
 

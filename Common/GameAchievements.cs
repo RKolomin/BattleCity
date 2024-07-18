@@ -32,6 +32,11 @@ namespace BattleCity.Common
         public int? HiScoreValue { get; set; }
 
         /// <summary>
+        /// Полный путь к папке
+        /// </summary>
+        public string DirectoryPath { get; private set; }
+
+        /// <summary>
         /// Получить наивысшее значение рекорда
         /// </summary>
         /// <param name="defaultValue">Значение по умолчанию</param>
@@ -52,12 +57,13 @@ namespace BattleCity.Common
         /// Загрузить рекорд
         /// </summary>
         /// <returns></returns>
-        public static GameAchievements Load()
+        public static GameAchievements Load(string directory = "")
         {
             try
             {
-                var data = File.ReadAllText(FILENAME, Encoding.UTF8);
+                var data = File.ReadAllText(Path.Combine(directory, FILENAME), Encoding.UTF8);
                 var result = JsonConvert.DeserializeObject<GameAchievements>(data);
+                result.DirectoryPath = directory;
                 if (result.Player1Record == null)
                     result.Player1Record = new UserRecord(0);
                 if (result.Player2Record == null)
@@ -77,7 +83,7 @@ namespace BattleCity.Common
         {
             try
             {
-                File.WriteAllText(FILENAME, this.ToJson(), Encoding.UTF8);
+                File.WriteAllText(Path.Combine(DirectoryPath, FILENAME), this.ToJson(), Encoding.UTF8);
             }
             catch { }
         }
